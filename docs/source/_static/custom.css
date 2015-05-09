@@ -1,0 +1,29 @@
+@import url("default.css");
+
+div.section > blockquote > div > p {
+    margin-top: 0em;
+    margin-bottom: 0.2em;
+    line-height: 100%;
+}
+
+div.section > blockquote {
+    margin-top: 0.2em;
+}
+
+ul.simple {
+    margin-bottom: 0.2em;
+}
+
+div.body p.caption {
+    text-align: justify;
+    font-size: 80%;
+}
+
+.todo {
+    color: red;
+}
+
+td.label {
+    width: 150px;
+}
+
