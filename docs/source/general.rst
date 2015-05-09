@@ -340,13 +340,11 @@ which is *the deformation gradient of the system in current configuration with r
 The eigenvalues of matrix :math:`{\bf C}` (also  called *principal* values) were obtained analyticaly, writing the characteristic polynomial for an arbitrary symmetric :math:`3 \times 3` matrix:
 
 .. math::
-   \begin{center}
    M = \begin{pmatrix}
    a & d & e \\
    d & b & f \\
    e & f & c 
    \end{pmatrix}
-   \end{center}
 
 .. math::
    \lambda ^{3} + A \lambda ^{2} + B \lambda + C = 0
@@ -356,9 +354,9 @@ where coefficients are
 
 .. math::
    \begin{split}
-   A = -(a + b + c), \\
-   B = ab + bc + ac - d^2 - e^2 - f^2,\\
-   C = abc + 2dfe - e^2b - f^2a - d^2c = det(M)
+   &A = -(a + b + c), \\
+   &B = ab + bc + ac - d^2 - e^2 - f^2,\\
+   &C = abc + 2dfe - e^2b - f^2a - d^2c = det(M)
    \end{split}
 
 are invariats of matrix (tensor), meaning that they do not change with rotation of the coordinate system. The solution of cubic equation was obtained using Viete's substitution (also Viete's triginometric formulas):
