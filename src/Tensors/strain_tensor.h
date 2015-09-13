@@ -24,25 +24,25 @@ inline void destroyStrainTensor();
 Tensors strainTensor;
 
 double** atomGreenStrain;
-double** atomStretch;
+//double** atomStretch;
 
 char outGreenStrainFilename[256];
 FILE* outGreenStrain;
 
-char outStretchFilename[256];
-FILE* outStretch;
+//char outStretchFilename[256];
+//FILE* outStretch;
 
 char pdbGreenStrainFilename[256];
 FILE* pdbGreenStrain;
 
-char pdbStretchFilename[256];
-FILE* pdbStretch;
+//char pdbStretchFilename[256];
+//FILE* pdbStretch;
 
 char tnsrGreenStrainFilename[256];
 FILE* tnsrGreenStrain;
 
-char tnsrStretchFilename[256];
-FILE* tnsrStretch;
+//char tnsrStretchFilename[256];
+//FILE* tnsrStretch;
 
 double strainScale;
 

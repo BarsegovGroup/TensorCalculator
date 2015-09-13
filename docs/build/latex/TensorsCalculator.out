@@ -1,0 +1,17 @@
+\BOOKMARK [0][-]{chapter.1}{Theoretical background}{}
+\BOOKMARK [1][-]{section.1.1}{Strain}{chapter.1}
+\BOOKMARK [1][-]{section.1.2}{Stress}{chapter.1}
+\BOOKMARK [0][-]{chapter.2}{Numerical approaches}{}
+\BOOKMARK [1][-]{section.2.1}{Strain}{chapter.2}
+\BOOKMARK [1][-]{section.2.2}{Stress}{chapter.2}
+\BOOKMARK [0][-]{chapter.3}{Using TensorsCalculator}{}
+\BOOKMARK [1][-]{section.3.1}{Format .tnsr}{chapter.3}
+\BOOKMARK [1][-]{section.3.2}{Tensors calculation}{chapter.3}
+\BOOKMARK [1][-]{section.3.3}{Tensors visualization}{chapter.3}
+\BOOKMARK [0][-]{chapter.4}{Input parameters file}{}
+\BOOKMARK [1][-]{section.4.1}{General parameters}{chapter.4}
+\BOOKMARK [1][-]{section.4.2}{Tensor visualization parameters}{chapter.4}
+\BOOKMARK [1][-]{section.4.3}{Energy distribution parameters}{chapter.4}
+\BOOKMARK [1][-]{section.4.4}{Strain distribution parameters}{chapter.4}
+\BOOKMARK [1][-]{section.4.5}{Example of VMD TCL script}{chapter.4}
+\BOOKMARK [0][-]{chapter*.37}{Bibliography}{}

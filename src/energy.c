@@ -97,6 +97,8 @@ inline void computeEnergy(){
 inline void readEnergy(){
 	printf("Reading input energies...\n");
 	readAtomValueFrame(tnsrEnergy, atomEnergy);
+	//int i;
+	//for (i = 0; i < 5; i++) printf("%d: %f\n", i, atomEnergy[i]);
 }
 
 inline void writeEnergy(){
@@ -126,6 +128,8 @@ inline void printPDBEnergy(){
 		pdbData.atoms[i].beta = 0.0;
 		pdbData.atoms[i].charge = 0.0;
 		pdbData.atoms[i].occupancy = atomEnergy[i] * energyScale;
+
+		//if (i < 5) printf("%d: %f\n", i, atomEnergy[i]);
 	}
 	if (cutoffAveOn || cutoffSumOn) makeCutOffAveraged();
 	if (segmentAveOn || segmentSumOn) makeSegmentAveraged();

@@ -1,0 +1,924 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Theoretical background &mdash; TensorsCalculator 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="TensorsCalculator 1.0 documentation" href="index.html" />
+    <link rel="prev" title="TensorsCalculator package" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="index.html" title="TensorsCalculator package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">TensorsCalculator 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="theoretical-background">
+<h1>Theoretical background<a class="headerlink" href="#theoretical-background" title="Permalink to this headline">¶</a></h1>
+<p><strong>Notations</strong></p>
+<ul class="simple">
+<li><span class="math">\({\bf X}\)</span> - material coordinates of a particle in reference configuration;</li>
+<li><span class="math">\({\bf x}\)</span> - material coordinates of a particle in deformed configuration;</li>
+<li><span class="math">\(\chi({\bf X}, t)\)</span> - mapping from reference configuration to a deformed configuration;</li>
+<li><span class="math">\(\alpha\)</span>, <span class="math">\(\beta\)</span>, <span class="math">\(\gamma\)</span> - vectors or tensors components (<span class="math">\(x\)</span>, <span class="math">\(y\)</span>, <span class="math">\(z\)</span>), superscripts;</li>
+<li><span class="math">\(i\)</span>, <span class="math">\(j\)</span> - particle number, subscript;</li>
+<li><span class="math">\({\bf T}\)</span> - force vector;</li>
+<li><span class="math">\(A\)</span> - area;</li>
+<li><span class="math">\({\bf F}=\{F^{\alpha\beta}\}\)</span> - deformation gradient tensor;</li>
+<li><span class="math">\(J=det{\bf F}\)</span> - determinant of deformation gradient tensor, change in unit volume;</li>
+<li><span class="math">\({\bf C}=\{C^{\alpha\beta}\}\)</span> - Green&#8217;s (Cauchy-Green) deformation tensor;</li>
+<li><span class="math">\({\bf E}=\{E^{\alpha\beta}\}\)</span> - strain tensor;</li>
+<li><span class="math">\({\bf U}=\{U^{\alpha\beta}\}\)</span> - right stretch tensor;</li>
+<li><span class="math">\({\bf R}=\{R^{\alpha\beta}\}\)</span> - rotation tensor;</li>
+<li><span class="math">\({\bf \sigma}=\{\sigma^{\alpha\beta}\}\)</span> - stress tensor (Cauchy);</li>
+<li><span class="math">\({\bf P}=\{P^{\alpha\beta}\}\)</span> - first Piola-Kirchhoff stress tensor;</li>
+<li><span class="math">\({\bf S}=\{S^{\alpha\beta}\}\)</span> - second Piola-Kirchhoff stress tensor;</li>
+<li><span class="math">\({\bf K}=\{K^{\alpha\beta}\}\)</span> - Kirchhoff stress tensor;</li>
+<li><span class="math">\({\bf B}=\{B^{\alpha\beta}\}\)</span> - second Biot (Jaumann) stress tensor;</li>
+</ul>
+<p>Deformation in continuum mechanics is the transformation of a body from a reference configuration to a current configuration. Consider a material body, which is a set of elements, called particles and in a chosen reference configuration each particle is identified by the position vector <span class="math">\({\bf X}\)</span>. The components of :math`{bf X}` in the chosen reference frame are called <em>material coordinates</em>. Mapping <span class="math">\({\bf \chi}\)</span> from one configuration to another is called <em>deformation of the body</em>. Let <span class="math">\({\bf x}\)</span> to be a position of the particle in the deformed configuration, such that <span class="math">\({\bf x}={\bf \chi}({\bf X})\)</span>. At any different time, the body may occupy different configurations so that a material paricle occupies a series of point in space. A smooth sequence of configurations in time describes a motion of the body <a class="reference internal" href="#dill2006">[Dill2006]</a>.</p>
+<div class="figure align-center" style="width: 40%">
+<img alt="_images/Fig1.png" src="_images/Fig1.png" />
+<p class="caption"><strong>Figure 1:</strong> Schematic of the body transformation from reference configuration (right) with position vector <span class="math">\({\bf X}\)</span> to the deformed configuration (left) with position vector <span class="math">\({\bf x}\)</span> occuring under smooth mapping <span class="math">\({\bf \chi}\)</span>.</p>
+</div>
+<p><em>Strain</em> is a description of deformation in terms of relative displacement of particles in the body. Depending on the amount of strain, or local deformation, the analysis of deformation is subdivided into three deformation theories:</p>
+<ul class="simple">
+<li>Finite strain theory (large strain theory) deals with deformations in which both rotations and strains are arbitrarily large. In this case, the undeformed and deformed configurations of the continuum are significantly different and a clear distinction has to be made between them. This is commonly the case with elastomers, plastically-deforming materials and other fluids and biological soft tissue.</li>
+<li>Infinitesimal strain theory (small strain theory) - strains and rotations are both small. In this case, the undeformed and deformed configurations of the body can be assumed identical. The infinitesimal strain theory is used in the analysis of deformations of materials exhibiting elastic behavior, such as materials found in mechanical and civil engineering applications, e.g. concrete and steel.</li>
+<li>Large-displacement or large-rotation theory, which assumes small strains but large rotations and displacements.</li>
+</ul>
+<p>In a body that is not deformed, the arrangement of the molecules corresponds to a state of thermal equilibrium, meaning that, if some portion of the body is considered, the resultant of the forces on that portion is zero. When a deformation occurs, the arrangement of the molecules is changed, and the body ceases to be in its original state of equiliubrium. Forces therefore arise which tend to return the body to equilibrium. These internal forces which occur when a body is deformed are called <em>internal stresses</em>. If no deformation occurs, there are no internal stresses <a class="reference internal" href="#landau1970">[Landau1970]</a>.</p>
+<p>Quantitatively, stress at a point <span class="math">\(A\)</span> in a body is defined as</p>
+<div class="math" id="equation-eqstress2">
+<span class="eqno">(1)</span>\[\sigma = \lim_{\Delta A \to 0}\frac{\Delta {\bf T}}{\Delta A}\]</div>
+<p>where <span class="math">\(\Delta A\)</span> is the area, surrounding the point A and <span class="math">\(\Delta {\bf T}\)</span> is acting force. The stress <span class="math">\(\sigma\)</span> is a measure of the average force per unit area of a surface within the body on which internal forces act.</p>
+<p>The stresses considered in continuum mechanics are only those produced during the application of external forces and the consequent deformation of the body; that is to say, <em>relative changes in deformation are considered rather than absolute values</em>. A body is considered stress-free if the only forces present are those inter-atomic forces (ionic, metallic, and van der Waals forces) required to hold the body together and to keep its shape in the absence of all external influences, including gravitational attraction. This assertion is not valid in cases where the deformation of the body results in macroscopic electric fields in it, so we will not discuss such bodies in futher.</p>
+<div class="section" id="strain">
+<span id="theorstrain"></span><h2>Strain<a class="headerlink" href="#strain" title="Permalink to this headline">¶</a></h2>
+<p>A strain is a normalized measure of deformation representing the <em>displacement between particles in the body relative to a reference length</em>. It is in general a tensor quantity. Physical insight into strains can be gained by observing that a given strain can be decomposed into <em>normal</em> and <em>shear</em> components. The amount of stretch or compression along a material line elements or <em>fibers</em> is the normal strain, and the amount of distortion associated with the sliding of plane layers over each other is the shear strain, within a deforming body. This could be applied by elongation, shortening, or volume changes, or angular distortion. Strains are dimensionless and are usually expressed as a decimal fraction, a percentage or in parts-per notation. Strains measure how much a given deformation differs locally from a rigid-body deformation.</p>
+<p>Consider a particular point <span class="math">\({\bf X}\)</span> and a neighboring point of the reference configuration are connected by the vector <span class="math">\(d \bf X\)</span>. The direction of the fiber is given by unit vector <span class="math">\({\bf N}\)</span> and its length is <span class="math">\(dS\)</span>, such that <span class="math">\(d{\bf X}={\bf N}dS\)</span>. After deformation, the particle moves to the place <span class="math">\({\bf x}\)</span> and the material fiber <strong>rotates</strong> and <strong>elongates</strong> to the deformed position <span class="math">\(d \bf x={\bf n}ds\)</span>. The deformed fiber is determined by the deformation:</p>
+<div class="math" id="equation-eqstrain3">
+<span class="eqno">(2)</span>\[d{\bf X} = {\bf F} \cdot d{\bf X}\]</div>
+<p>where</p>
+<div class="math" id="equation-eqstrain4">
+<span class="eqno">(3)</span>\[{\bf F} = \frac{\partial {\bf x(X)}}{\partial \bf X}\]</div>
+<p>Tensor <span class="math">\({\bf F}\)</span> is called the <em>deformation gradient</em>. The deformation gradient at a point completely determines the rotation and the change in the length of any fiber of material emanating from this point.</p>
+<p>Let us consider a pair of fibers <span class="math">\(d_1 {\bf X}\)</span> and <span class="math">\(d_2 {\bf X}\)</span>, which are deformed to <span class="math">\(d_1 {\bf x}\)</span> and <span class="math">\(d_2 {\bf x}\)</span>, then we have:</p>
+<div class="math" id="equation-eqstrain5">
+<span class="eqno">(4)</span>\[d_1{\bf x} \cdot d_2{\bf x} = d_1{\bf X} \cdot {\bf C} \cdot d_2{\bf X}\]</div>
+<p>According to Eq. <a href="#equation-eqstrain4">(3)</a></p>
+<div class="math" id="equation-eqstrain6">
+<span class="eqno">(5)</span>\[{\bf C} = {\bf F}^\tau \cdot {\bf F}\]</div>
+<p>The tensor <span class="math">\({\bf C}\)</span> is a function of <span class="math">\({\bf X}\)</span> that is called the <em>deformation tensor</em> or also <em>Cauchy-Green tensor</em> or <em>Green&#8217;s deformation tensor</em>.</p>
+<p>Suppose that <span class="math">\(d_1 {\bf X}=d_2 {\bf X}=d {\bf X}\)</span>. The <em>stretch</em> <span class="math">\(\alpha\)</span> is the ration of the deformed length to the initial length:</p>
+<div class="math" id="equation-eqstrain7">
+<span class="eqno">(6)</span>\[ds = \alpha dS\]</div>
+<p>The stretch is therefore a positive number, equal to 1 for no change in the length, greater that 1 for an increase in length, and less than 1 for shortening of the fiber. The change in length divided by the reference length is the <em>extension</em> or <em>normal strain</em>, equal to <span class="math">\(\alpha-1\)</span>, then</p>
+<div class="math" id="equation-eqstrain8">
+<span class="eqno">(7)</span>\[\alpha^2 = {\bf N} \cdot {\bf C} \cdot {\bf N}\]</div>
+<p>From Eqs. <a href="#equation-eqstrain7">(6)</a> and <a href="#equation-eqstrain3">(2)</a>:</p>
+<div class="math" id="equation-eqstrain9">
+<span class="eqno">(8)</span>\[\alpha {\bf n} = {\bf F} \cdot {\bf N}\]</div>
+<p>Next, consider two fibers that are initially perpendicular to each other. Let <span class="math">\(\gamma\)</span> denotes the change in angle between the fibers upon deformation, positive for a decrease in angle. The angle between deformed fibers is <span class="math">\(\pi/2-\gamma\)</span>, so we call <span class="math">\(\gamma\)</span> the <em>shear</em> or <em>shear strain</em> on the fibers. From Eq. <a href="#equation-eqstrain5">(4)</a>:</p>
+<div class="math" id="equation-eqstrain10">
+<span class="eqno">(9)</span>\[\alpha_1 \alpha_2 sin\gamma = {\bf N_1} \cdot {\bf C} \cdot {\bf N_2}\]</div>
+<p>The deformation tensor <span class="math">\({\bf C}\)</span> at <span class="math">\({\bf X}\)</span> determines the stretch of any fiber at <span class="math">\({\bf X}\)</span> with given direction <span class="math">\({\bf N}\)</span> (Eq. <a href="#equation-eqstrain8">(7)</a>), at the same time <span class="math">\({\bf C}\)</span> also determines the shear of any pair of orthogonal fibers at <span class="math">\({\bf X}\)</span> (Eq. <a href="#equation-eqstrain10">(9)</a>). Therefore, strain of the body at <span class="math">\({\bf X}\)</span> is completely determined by <span class="math">\({\bf C}\)</span>. When <span class="math">\({\bf C}={\bf 1}\)</span>, no strain of fibers at <span class="math">\({\bf X}\)</span> occurs. For material characterization, it is sometimes more convenient to have a measure of strain called <em>strain tensor</em>, which is zero when no strain occurs. One such strain is <span class="math">\({\bf E}=\frac{1}{2}({\bf C} - {\bf 1})\)</span>.</p>
+<p>The choice of strain measure is arbitrary. In practice, it is decided by the simplicity of the mathematical formulation of the convenience in correletion with experiments on a particular material. <em>Any symmetric tensor that is one-to-one correspondence with the stretch :math:`{bf U}` (see definition below) and is zero for no deformation can be used as a strain measure</em>:</p>
+<div class="math" id="equation-eqstrain12">
+<span class="eqno">(10)</span>\[{\bf E} = f({\bf U}), f({\bf 0}) = {\bf )}, {\bf U} = f^{-1}({\bf E})\]</div>
+<p>For example, a general formula for <em>Lagrangian strain tensors</em> is:</p>
+<div class="math" id="equation-eqstrain13">
+<span class="eqno">(11)</span>\[{\bf E}_m = \frac{1}{2m}({\bf U}^{2m} - {\bf 1})\]</div>
+<p>for different values of <span class="math">\(m\)</span> we can get:</p>
+<div class="math" id="equation-eqstrain14">
+<span class="eqno">(12)</span>\[\begin{split}\begin{split}
+&amp;{\bf E}_{(1)} = \frac{1}{2}({\bf U}^2 - {\bf 1}) = \frac{1}{2}({\bf C} - {\bf 1}) \text{ - Green's strain tensor} \\
+&amp;{\bf E}_{(1/2)} = ({\bf U} - {\bf 1}) \text{ - Biot (engeneering) strain tensor} \\
+&amp;{\bf E}_{(0)} = ln({\bf U}) \text{ - Logarithmic (natural, true, Hencky) strain tensor}
+\end{split}\end{split}\]</div>
+<p>Now, consider three fibers at <span class="math">\({\bf X}\)</span> that are not collinear and make a right-handed system. The volume of the parallelepiped with these three adjacent edges in undeformed configuration is <span class="math">\(dV_0=[d_1{\bf X}, d_2{\bf X}, d_3{\bf X}]\)</span>. The bracket notation here denores the scalar triple product. In deformed configuration the there fibers determine the volume of deformed volume element <span class="math">\(dV=[d_1{\bf x}, d_2{\bf x}, d_3{\bf x}]\)</span>. Using Eq. <a href="#equation-eqstrain3">(2)</a> for each fiber, we have:</p>
+<div class="math">
+<span class="eqno">(13)</span>\[dV = det{\bf F}~dV_0\]</div>
+<p>If consider only deformations for which the volume is never decreased to zero (<span class="math">\(J \equiv det{\bf F} &gt; 0\)</span>) then the deformation gradient <span class="math">\({\bf F}\)</span> is non-singular tensor and the inverse tensor <span class="math">\({\bf F^{-1}}\)</span> exists. By the polar decomposition theorem, there exists a <em>rotational tensor</em> <span class="math">\({\bf R}\)</span> and positive defined symmetric <em>right and left stretch tensors</em> <span class="math">\({\bf U}\)</span> and <span class="math">\({\bf V}\)</span>, respectively, such that</p>
+<div class="math" id="equation-eqstrain16">
+<span class="eqno">(14)</span>\[\begin{split}\begin{split}
+{\bf F} = {\bf R} \cdot {\bf U} = {\bf V} \cdot {\bf R}, \\
+{\bf U} = {\bf U^T}, det{\bf U} &gt; 0, \\
+{\bf V} = {\bf V^T}, det{\bf V} &gt; 0, \\
+{\bf R^{-1}} = {\bf R^T}, det {\bf R} = +1
+\end{split}\end{split}\]</div>
+<p>The tensor <span class="math">\({\bf U}\)</span> is called <em>right stretch tensor</em> and <span class="math">\({\bf V}\)</span> is called <em>left stretch tensor</em>. The representation in Eq. <a href="#equation-eqstrain16">(14)</a> is a decomposition of the deformation gradient into a stretch <span class="math">\({\bf U}\)</span> followed by rotation <span class="math">\({\bf R}\)</span>, or a rotation <span class="math">\({\bf R}\)</span> is followed by stretch <span class="math">\({\bf V}\)</span>. It follows from Eq. <a href="#equation-eqstrain6">(5)</a> that</p>
+<div class="math" id="equation-eqstrain17">
+<span class="eqno">(15)</span>\[{\bf C} = {\bf U^2}, {\bf U} = {\bf C^{1/2}}\]</div>
+<div class="figure align-center" style="width: 40%">
+<img alt="_images/Fig2.png" src="_images/Fig2.png" />
+<p class="caption"><strong>Figure 2:</strong> Schematic representation of the polar decomposition of the deformation gradient. The reference (undeformed) configuration is <span class="math">\(\chi_{0}({\bf X})\)</span>, the deformed configuration in a moment <span class="math">\(t\)</span> is <span class="math">\(\chi_{t}({\bf X})\)</span>.</p>
+</div>
+<p>For the further reading see <a class="reference internal" href="#dill2006">[Dill2006]</a>.</p>
+</div>
+<div class="section" id="stress">
+<span id="theorstress"></span><h2>Stress<a class="headerlink" href="#stress" title="Permalink to this headline">¶</a></h2>
+<p>Let us consider the total force acting on some portion of the body. Firstly, this total force is equal to the sum of all the forced on all the volume elements in that portion of the body, i.e. it can be written as the volume integral <span class="math">\(\int {\bf T}dV\)</span>, where <span class="math">\({\bf T}\)</span> is the force per unit volume and <span class="math">\({\bf T}dV\)</span> is the force on the volume element <span class="math">\(dV\)</span>. Secondly, the forces with which various parts of the portion considered act on one another are canceled by Newton&#8217;s third law and, therefore, give zero in the total resultant force. Thus, the required total force can be regarded as the sum of the forces exerted on the given portion of the body by the portion surrounding it.</p>
+<p>Hence, for any portion of the body, each of three components <span class="math">\(\int {\bf T^{\alpha}}dV\)</span> of the resultant of all the internal stresses can be transformed into an integral over the surface. According to divergence theorem, the integral of a scalar over an arbitrary volume can be transformes into an integral over the surface  if the scalar is the divergence of a vector. In the present case we have the integral of a vector, then the vector <span class="math">\(T^{\alpha}\)</span> must be the divergence of a tensor of rank two, i.e. be of the form <span class="math">\(T^{\alpha}={\partial \sigma^{\alpha\beta}}/{\partial x^{\beta}}\)</span>. Then the force on any volume can be written as an integral over the closed surface bounding that volume:</p>
+<div class="math" id="equation-eqstress1">
+<span class="eqno">(16)</span>\[\int {T^{\alpha} dV} = \int{\frac{\partial \sigma^{\alpha\beta}}{\partial x^{\beta}} dV} = \oint{\sigma^{\alpha\beta} dn^{\beta}}\]</div>
+<p>where <span class="math">\(dn^{\beta}\)</span> are the component of the surface element vector <span class="math">\(d{\bf n}\)</span>, directed along the outward normal.</p>
+<p>The tensor <span class="math">\(\sigma^{\alpha\beta}\)</span> is called the <em>stress tensor</em>. As we see from Eq. <a href="#equation-eqstress1">(16)</a>, <span class="math">\(\sigma^{\alpha\beta}dn^{\beta}\)</span> is the <span class="math">\(\alpha\)</span>-th component of the force <span class="math">\({\bf T}\)</span> acting on the surface element <span class="math">\(d{\bf n}\)</span>. By taking elements of area in the planes of <span class="math">\(xy\)</span>, <span class="math">\(yz\)</span>, <span class="math">\(xz\)</span>, we find that the component <span class="math">\(\sigma^{\alpha\beta}\)</span> of the stress tensor is the <span class="math">\(\alpha\)</span>-th component of the force acting on a unit area perpendicular to the <span class="math">\(x^{\beta}\)</span>-axis <a class="reference internal" href="#landau1970">[Landau1970]</a>.</p>
+<div class="figure align-center" style="width: 40%">
+<img alt="_images/Fig3.png" src="_images/Fig3.png" />
+<p class="caption"><strong>Figure 3:</strong> The components of the stress vector on a coordinate surface are equal to three components of the stress tensor, such that the first index corresponds to the direction on the component and the second index identifies the direction of surface.</p>
+</div>
+<p>Depending on the orientation of the plane under consideration, the stress vector may not necessarily be perpendicular to that plane, i.e. parallel to <span class="math">\({\bf n}\)</span>, and can be resolved into two components:</p>
+<ul class="simple">
+<li>one component normal to the plane, called <em>normal stress</em>:</li>
+</ul>
+<div class="math" id="equation-eqstress10">
+<span class="eqno">(17)</span>\[\sigma_{\bf n} = \lim_{\Delta A \to 0}\frac{\Delta T_{\bf n}}{\Delta A} = {\bf \sigma} \cdot {\bf n} = \sum_{\alpha,\beta}{\sigma^{\alpha\beta}n^{\alpha}n^{\beta}}\]</div>
+<p>where <span class="math">\(\Delta T_n\)</span> is the normal component of the force <span class="math">\(\Delta {\bf T}\)</span> to the differential area <span class="math">\(\Delta A\)</span> (see Eqs. <a href="#equation-eqstress2">(1)</a> and <a href="#equation-eqstress1">(16)</a>).</p>
+<ul class="simple">
+<li>and the other component parallel to this plane, called the <em>shear stress</em>:</li>
+</ul>
+<div class="math" id="equation-eqstress11">
+<span class="eqno">(18)</span>\[\tau_{\bf n} = \lim_{\Delta A \to 0}\frac{\Delta T_{\bf s}}{\Delta A}  = \sqrt{{\bf \sigma}^{2} - {\bf \sigma_{n}}^2} = \sqrt{\sum_{\alpha, \beta, \gamma}{\sigma^{\alpha\beta} \sigma^{\alpha\gamma} n^{\beta} n^{\gamma}}}\]</div>
+<p>where <span class="math">\(\Delta T_s\)</span> is the tangential component of the force <span class="math">\(\Delta {\bf T}\)</span> to the differential surface area <span class="math">\(\Delta A\)</span> (see Eqs. <a href="#equation-eqstress2">(1)</a> and <a href="#equation-eqstress1">(16)</a>). The shear stress can be further decomposed into two mutually perpendicular vectors.</p>
+<p>Consider a body in reference state and deformed state. Let <span class="math">\(dA{\bf N}\)</span> denotes a unit area with normal vector <span class="math">\({\bf N}\)</span> in reference state and <span class="math">\(da{\bf n}\)</span> denotes the same unit area in deformed state with the normal vector <span class="math">\({\bf n}\)</span>. Let <span class="math">\({\bf dT}\)</span> be the differential force vector that represents the resultant of the total internal forces acting on <span class="math">\(da\)</span> in deformed state. According to Eqs. <a href="#equation-eqstress2">(1)</a> and <a href="#equation-eqstress1">(16)</a>, we can define force <span class="math">\(\Delta {\bf T}\)</span> and unit area <span class="math">\(\Delta A\)</span> in arbitrary way and evaluate several measures of stress:</p>
+<ul class="simple">
+<li><em>Cauchy stress</em> (<span class="math">\({\bf \sigma}\)</span>) is the most commonly used measure of stress (also is called true stress tensor), which is defined as force in deformed configuration per unit area in deformed configuration:</li>
+</ul>
+<div class="math" id="equation-eqstress4">
+<span class="eqno">(19)</span>\[{\bf dT} = ({\bf n}da) \cdot {\bf \sigma}\]</div>
+<p>The Cauchy stress tensor is used for stress analysis of material bodies experiencing small deformations where the differences in stress distribution in most cases can be neglected. The Cauchy stress tensor is symmetric.</p>
+<ul class="simple">
+<li><em>First Piola-Kirchhoff stress</em> (<span class="math">\({\bf P}\)</span>) is the measure of stress defined as force in deformed configuration per unit area in reference configuration:</li>
+</ul>
+<div class="math" id="equation-eq:eqstress5">
+<span class="eqno">(20)</span>\[\begin{split}\begin{split}
+&amp;{\bf dT} = (dA{\bf N}) \cdot {\bf P},\\
+&amp;{\bf P} = J {\bf F}^{-1} \cdot {\bf \sigma}
+\end{split}\end{split}\]</div>
+<p>The first Piola-Kirchhoff stress tensor is used for stress analysis of material bodies experiencing large deformations. Like deformation gradient <span class="math">\({\bf F}\)</span>, the first Piola-Kirchhoff tensor is unsymmetric two-point tensor.</p>
+<ul class="simple">
+<li><em>Second Piola-Kirchhoff stress</em> (<span class="math">\({\bf S}\)</span>)} is the measure of stress defined as modified force in deformed configuration (<span class="math">\({\bf d\hat T}\)</span>) per unit area in reference configuration. The purpose of this is that the second Piola-Kirchhoff stress tensor will now be a symmetric tensor:</li>
+</ul>
+<div class="math" id="equation-eq:eqstress6">
+<span class="eqno">(21)</span>\[\begin{split}\begin{split}
+&amp;{\bf d\hat T} = {\bf F}^{-1} \cdot {\bf dT}, \\
+&amp;{\bf d\hat T} = (dA{\bf N}) \cdot {\bf S}, \\
+&amp;{\bf S} = J {\bf F}^{-1} \cdot {\bf \sigma} \cdot {\bf F}^{-T}
+\end{split}\end{split}\]</div>
+<p>If the material rotates without a change in stress state (rigid rotation), the components of the first Piola-Kirchhoff stress tensor will vary with material orientation, but the components of the second Piola-Kirchhoff stress tensor remain constant, irrespective of material orientation. For infinitesimal deformations or rotations, the Cauchy and Piola-Kirchhoff tensors are identical.</p>
+<ul class="simple">
+<li><em>Kirchhoff stress tensor</em> (<span class="math">\({\bf K}\)</span>) is a scalar multiple of the Cauchy stress tensor <span class="math">\({\bf \sigma}\)</span>. The scalar factor is the determinant of deformation gradient tensor, <span class="math">\({\bf F}\)</span>:</li>
+</ul>
+<div class="math" id="equation-eq:eqstress7">
+<span class="eqno">(22)</span>\[{\bf K} = J {\bf \sigma}\]</div>
+<p>It is used widely in numerical algorithms in metal plasticity because relates to the Cauchy stress via scalar.</p>
+<ul class="simple">
+<li><em>Biot (Jaumann) stress tensor</em> (<span class="math">\({\bf B}\)</span>)  is the measure of stress defined as force due to stretch only applied in the undeformed body (<span class="math">\({\bf d\hat T}\)</span>) per unit undeformed area.</li>
+</ul>
+<div class="math" id="equation-eqstress8">
+<span class="eqno">(23)</span>\[\begin{split}\begin{split}
+&amp;{\bf d\hat T} = {\bf R}^{-1} \cdot {\bf dT}, \\
+&amp;{\bf d\hat T} = (dA{\bf N}) \cdot {\bf B}, \\
+&amp;{\bf B} = J {\bf F}^{-1} \cdot {\bf \sigma} \cdot {\bf R} = J {\bf F}^{-1} \cdot {\bf \sigma} \cdot {\bf F}^{-T} \cdot {\bf U}
+\end{split}\end{split}\]</div>
+<p>where <span class="math">\({\bf R}\)</span> and <span class="math">\({\bf U}\)</span> is a rotational and rigth stretch components respectively of deformation gradient tensor due to polar decomposition (see Eq. <a href="#equation-eqstrain16">(14)</a>). Biot stress tensor is used in combination with Biot (engeneering) strain tensor <a class="reference internal" href="#dill2006">[Dill2006]</a>, <a class="reference internal" href="#bonet2008">[Bonet2008]</a>.</p>
+</div>
+</div>
+<div class="section" id="numerical-approaches">
+<span id="numerappr"></span><h1>Numerical approaches<a class="headerlink" href="#numerical-approaches" title="Permalink to this headline">¶</a></h1>
+<p>The calculations of stress and strain tensors of a biological particle are based on the coarse-grained representation of the molecule, described by <em>Self-Organized Polymer (SOP) model</em>. That is, the molecule is described by one or two interacting centers (<span class="math">\(C_\alpha\)</span>&#8216;s only or <span class="math">\(C_\alpha\)</span> and <span class="math">\(C_\beta\)</span>) and total potential energy is follow</p>
+<div class="math" id="equation-usop">
+<span class="eqno">(24)</span>\[U_{SOP} = U_{FENE} + U_{NB}^{ATT} + U_{NB}^{REP}\]</div>
+<p>The details of the SOP model, as well as complete explanation of how to use SOP-GPU package can be found in <a class="reference external" href="http://sop-gpu.readthedocs.org/">SOP-GPU documentation</a>.</p>
+<div class="section" id="numerstrain">
+<span id="id7"></span><h2>Strain<a class="headerlink" href="#numerstrain" title="Permalink to this headline">¶</a></h2>
+<p>Because strain is fundamentally a continuum quality, its computation from atomic displacement data requires either interpolation of a continuous displacement field (<span class="math">\(\chi({\bf X})\)</span>) or discretization of the deformation gradient tensor (<span class="math">\({\bf F}\)</span>). Here we go with the second way.</p>
+<p><strong>To calculate an atomic deformation gradient tensor</strong> (<span class="math">\({\bf F_i}\)</span>) we utilized the approach purposed by Horstemeyer and Baskes <a class="reference internal" href="#horstemeyer1999">[Horstemeyer1999]</a> and improved by Gullete et al. <a class="reference internal" href="#gullett2008">[Gullett2008]</a>. The deformation gradient tensor emerges from a weighted least squares optimization of local deformation data. In an arbitrary atomic system, the deformation in the neighborhood of atom <span class="math">\(i\)</span> is characterized by the changes in the relative position of its neighbors. Let atom <span class="math">\(i\)</span> is located at the position <span class="math">\({\bf X}_i\)</span> in reference configuration and position <span class="math">\({\bf x}_i\)</span> in deformed configuration. The relative position of neighboring atom <span class="math">\(j\)</span> is given by the vector <span class="math">\(\Delta {\bf X}_{ij}={\bf X}_{j}-{\bf X}_{i}\)</span> in reference configuration and by <span class="math">\(\Delta {\bf x}_{ij}={\bf x}_{j}-{\bf x}_{i}\)</span> in deformed configuration. Here the subscripts denote atom numbers, and the vectors <span class="math">\(\Delta {\bf X}_{ij}\)</span> and <span class="math">\(\Delta {\bf x}_{ij}\)</span> connect atom <span class="math">\(i\)</span> to its neighbors <span class="math">\(j\)</span>. There exists a unique linear mapping that transforms the relative position vector <span class="math">\(\Delta {\bf X}_{ij}\)</span> to <span class="math">\(\Delta {\bf x}_{ij}\)</span>:</p>
+<div class="math" id="equation-eqstrain18">
+<span class="eqno">(25)</span>\[\Delta {\bf x}_{ij} = {\bf F}_{i} \cdot \Delta {\bf X}_{ij}\]</div>
+<p>where <span class="math">\({\bf F}_i\)</span> is the value of the deformation gradient at atom <span class="math">\(i\)</span>. Here, Eq. <a href="#equation-eqstrain18">(25)</a> defines the operation of the discrete deformation gradient at atom <span class="math">\(i\)</span> in a manner analogous to the continuum deformation gradient of Eq. <a href="#equation-eqstrain3">(2)</a>,  where it maps a vector in the reference configuration to a vector in the deformed configuration. Writing Eq. <a href="#equation-eqstrain3">(2)</a> for atom <span class="math">\(i\)</span> and each of its neighbors leads to a system of linear equations that, because of the freedom of the atomic motion, cannot generally be satisfied by a single mapping <span class="math">\({\bf F}_i\)</span>. For this reason, an optimal local deformation gradient (<span class="math">\(\hat {\bf F}_i\)</span>) is sought, by calculating the mapping error between atom <span class="math">\(i\)</span> and a single neighbor <span class="math">\(j\)</span> as <span class="math">\(l^2\)</span>-norm of the difference between the <span class="math">\(\Delta {\bf x}_{ij}\)</span> and <span class="math">\(\hat {\bf F}_{i} \cdot \Delta {\bf X}_{ij}\)</span>:</p>
+<div class="math">
+<span class="eqno">(26)</span>\[\phi_{ij} = (\Delta {\bf x}_{ij} - \hat{\bf F}_{i} \cdot \Delta {\bf X}_{ij})^{\tau} (\Delta {\bf x}_{ij} - \hat{\bf F}_{i} \cdot \Delta {\bf X}_{ij})\]</div>
+<p>Thus, the weighted least squares error among the neighbors of <span class="math">\(i\)</span> is given by</p>
+<div class="math">
+<span class="eqno">(27)</span>\[\phi_{i} = \sum_{j=1}^{N}(\Delta {\bf x}_{ij} - \hat{\bf F}_{i} \cdot \Delta {\bf X}_{ij})^{\tau} (\Delta {\bf x}_{ij} - \hat{\bf F}_{i} \cdot \Delta\]</div>
+<p>where <span class="math">\(N\)</span> is the number of neighboring atoms, and <span class="math">\(w_j\)</span> is a weight factor.</p>
+<p>This formulation takes into account the fact that local deformation at individual atoms in system are subjected to inhomogeneous deformations; thus the local deformation gradient is computed without extension of the mapping error to the bulk. The optimal deformation gradient <span class="math">\(\hat {\bf F}_{i}\)</span>, in least square sense, is obtained by minimizing <span class="math">\(\phi_{i}\)</span> with respect to components of <span class="math">\(\hat {\bf F}_{i}\)</span>.</p>
+<div class="math" id="equation-eqstrain19">
+<span class="eqno">(28)</span>\[\frac{\partial \phi_{i}}{\partial \hat F^{\alpha \beta}} = \sum_{j=1}^{N}(-2 \Delta x_{ij}^{\alpha} \Delta X_{ij}^{\beta} + 2 \Delta X_{ij}^{\beta} \hat F^{\alpha \gamma} \Delta X_{ij}^{\gamma}) w_j\]</div>
+<p>Here greek superscripts denote components of vectors <span class="math">\(\Delta {\bf X}_{ij}\)</span> and <span class="math">\(\Delta {\bf x}_{ij}\)</span> and tensor <span class="math">\(\hat{\bf F}_{i}\)</span>. Setting Eq. <a href="#equation-eqstrain19">(28)</a> equal to zero and solving for the components of <span class="math">\(\hat{\bf F}_{i}\)</span> get the linear system of equations which in matrix notation can be written as</p>
+<div class="math">
+<span class="eqno">(29)</span>\[\hat{\bf F} {\bf D} = {\bf A}\]</div>
+<p>where <span class="math">\({\bf D}\)</span> and <span class="math">\({\bf A}\)</span> are <span class="math">\(3 \times 3\)</span> matricies such as</p>
+<div class="math" id="equation-defgradAD">
+<span class="eqno">(30)</span>\[\begin{split}\begin{split}
+{\bf D} = \sum_{j}\Delta {\bf X}_{ij} \Delta {\bf X}_{ij}^{\tau} w_{j}, \\
+{\bf A} = \sum_{j}\Delta {\bf x}_{ij} \Delta {\bf X}_{ij}^{\tau} w_{j}
+\end{split}\end{split}\]</div>
+<p>Provided that <span class="math">\({\bf D}\)</span> was formed from a minimum of three non-coplanar nearest neighbors having nonzero weights, the optimal discrete deformation gradient is determined as</p>
+<div class="math" id="equation-defgradnum">
+<span class="eqno">(31)</span>\[\hat{\bf F} = {\bf A} {\bf D}^{-1}\]</div>
+<p>which is <em>the deformation gradient of the system in current configuration with respect to reference configuration</em> <a class="reference internal" href="#gullett2008">[Gullett2008]</a>.</p>
+<p><strong>To obtain the value of atomic stretch tensor</strong> (<span class="math">\({\bf U_i}\)</span>) we computed the Green&#8217;s strain tensor according to Eq. <a href="#equation-eqstrain6">(5)</a> and calculated square root (see Eq. <a href="#equation-eqstrain17">(15)</a>) using eigenvalue decomposition of tensor <span class="math">\({\bf C}={\bf R} {\bf \Lambda} {\bf R}^{-1}\)</span>, where {bf R} is the matrix of eigenvectors and <span class="math">\({\bf \Lambda}\)</span> is eigenvalue matrix. Since tensor <span class="math">\({\bf C}\)</span> is real symmetric matix then eigenvectors and eigenvalues are defined in a real space, <span class="math">\({\bf \Lambda}\)</span> is positive-defined and <span class="math">\({\bf R}^{-1}={\bf R}^{\tau}\)</span> is orthogonal matrix. Then</p>
+<div class="math" id="equation-eqstrain21">
+<span class="eqno">(32)</span>\[{\bf U} = {\bf C}^{1/2} = {\bf R} {\bf \Lambda}^{1/2} {\bf R}^{\tau}\]</div>
+<p>The eigenvalues of matrix <span class="math">\({\bf C}\)</span> (also  called <em>principal</em> values) were obtained analyticaly, writing the characteristic polynomial for an arbitrary symmetric <span class="math">\(3 \times 3\)</span> matrix:</p>
+<div class="math">
+\[\begin{split}M = \begin{pmatrix}
+a &amp; d &amp; e \\
+d &amp; b &amp; f \\
+e &amp; f &amp; c
+\end{pmatrix}\end{split}\]</div>
+<div class="math" id="equation-eqstrain20">
+<span class="eqno">(33)</span>\[\lambda ^{3} + A \lambda ^{2} + B \lambda + C = 0\]</div>
+<p>where coefficients are</p>
+<div class="math">
+\[\begin{split}\begin{split}
+&amp;A = -(a + b + c), \\
+&amp;B = ab + bc + ac - d^2 - e^2 - f^2,\\
+&amp;C = abc + 2dfe - e^2b - f^2a - d^2c = det(M)
+\end{split}\end{split}\]</div>
+<p>are invariats of matrix (tensor), meaning that they do not change with rotation of the coordinate system. The solution of cubic equation was obtained using Viete&#8217;s substitution (also Viete&#8217;s triginometric formulas):</p>
+<div class="math" id="equation-eqstrain23">
+<span class="eqno">(34)</span>\[\begin{split}\begin{split}
+\lambda_1 = -2\sqrt{Q}\cos{(\phi)} - \frac{A}{3}, \\
+\lambda_2 = -2\sqrt{Q}\cos{(\phi + \frac{2}{3}\pi)} - \frac{A}{3}, \\
+\lambda_3 = -2\sqrt{Q}\cos{(\phi - \frac{2}{3}\pi)} - \frac{A}{3}
+\end{split}\end{split}\]</div>
+<p>where</p>
+<div class="math">
+\[\phi = \frac{1}{3}\arccos{\frac{R}{\sqrt{Q^3}}}, ~Q = \frac{A^2 - 3B}{9}, ~R = \frac{2A^3 - 9AB + 27C}{54}\]</div>
+<p>Since we work in the space of symmetric real matricies all the possiblel solution of the characteristic polynomial (Eq. <a href="#equation-eqstrain20">(33)</a>) are real positive values (Eqs. <a href="#equation-eqstrain23">(34)</a>).</p>
+<p>Solving problems Eqs. <a href="#equation-eqstrain20">(33)</a> - <a href="#equation-eqstrain23">(34)</a> for each Green&#8217;s tensor <span class="math">\({\bf C}_i\)</span> for each atom <span class="math">\(i\)</span>, we sustitute solution into Eq. <a href="#equation-eqstrain21">(32)</a>) and can obtain atomic stretch tensor <span class="math">\({\bf U}_i\)</span>. We can calculate different atomic strain tensors <span class="math">\({\bf E}_i\)</span> using Eqs. <a href="#equation-eqstrain13">(11)</a>.</p>
+</div>
+<div class="section" id="numerstress">
+<span id="id11"></span><h2>Stress<a class="headerlink" href="#numerstress" title="Permalink to this headline">¶</a></h2>
+<p>We calculated atomic stress using forlmulas, widely utilized to measure atomic stress in crystals (<a class="reference internal" href="#basinski1971">[Basinski1971]</a>, <a class="reference internal" href="#cormier2001">[Cormier2001]</a>, <a class="reference internal" href="#delph2005">[Delph2005]</a>) and proteins (<a class="reference internal" href="#ishikura2012">[Ishikura2012]</a>), according to which</p>
+<div class="math" id="equation-stressnum">
+<span class="eqno">(35)</span>\[{\bf \sigma}_{i} = \frac{1}{2\Omega_{i}}(\sum_{j \neq i}{{\bf T}_{ij} \otimes {\bf r}_{ij}} + m_{i}{\bf v}_{i} \otimes {\bf v}_{i})\]</div>
+<p>where <span class="math">\({\bf \sigma}_{i}\)</span> is the atomic stress tensor of atom <span class="math">\(i\)</span>, <span class="math">\({\bf r}_{ij}={\bf x}_{j}-{\bf x}_{i}\)</span>, <span class="math">\(\otimes\)</span> represents the tensor product, <span class="math">\({\bf T}_{ij}\)</span> is the pairwise force vector acting on atom <span class="math">\(i\)</span> from atom <span class="math">\(j\)</span>, and <span class="math">\(m_{i}\)</span>, <span class="math">\({\bf v}_{i}\)</span> and <span class="math">\(\Omega_{i}\)</span> are the mass, velocity and volume of atom <span class="math">\(i\)</span>, respectively. In our calculations we neglect kinetic energy of an atom (second term in Eq. <a href="#equation-stressnum">(35)</a>) since we consider coarse-grained representation of the molecule when all the particles have same kinetic energy term.</p>
+<p>If consider <span class="math">\(T_{ij}^{\alpha}=-\frac{dW_{ij}(r_{ij})}{dr_{ij}}\frac{dr_{ij}^{\alpha}}{r_{ij}}\)</span>, where <span class="math">\(W_{ij}(r_{ij})\)</span> is pair potential between atom <span class="math">\(i\)</span> and <span class="math">\(j\)</span>, then the stress tensor representation in component becomes:</p>
+<div class="math" id="equation-eqstress3">
+<span class="eqno">(36)</span>\[\sigma_{i}^{\alpha\beta} = -\frac{1}{2\Omega_{i}}\sum_{j \neq i}{\frac{dW_{ij}(r_{ij})}{dr_{ij}} \frac{r_{ij}^{\alpha}r_{ij}^{\beta}}{r_{ij}}}\]</div>
+<p>The question arises how calculate the atomic volume <span class="math">\(\Omega_{i}\)</span>. This is the point which separates all the numerical formulations of stress measure provided previously (<a class="reference internal" href="#hardy1982">[Hardy1982]</a>, <a class="reference internal" href="#cormier2001">[Cormier2001]</a>) and it can be calculated in different ways. In our calculation, for each atom we considered it interacting in pairwise way with other particles within the certain cut-off radius. Then we found so-called &#8220;effective volume&#8221; originated from these pairs:</p>
+<div class="math">
+<span class="eqno">(37)</span>\[\Omega_{i} = \frac{4 \pi}{3}a_{i}^{3},~\text{where}~a_{i} = \frac{\sum_{j \neq i}{r_{ij}^{-1}}}{2 \sum_{j \neq i}{r_{ij}^{-2}}}\]</div>
+<p>here <span class="math">\(r_{ij}\)</span> is the distance between two particles within a chosen cut-off. For our coarse-grained tensors the values for <span class="math">\(a_i \approx 3.1-3.9\)</span> Å, corresponding to a covalent <span class="math">\(C_\alpha-C_\alpha\)</span> bond length.</p>
+<p>The Eq. <a href="#equation-eqstress3">(36)</a> in the present form corresponds to the local atomic Cauchy stress. In order to obtain any other stress measures one can use the Eqs. <a href="#equation-eqstress4">(19)</a> - <a href="#equation-eqstress8">(23)</a>. Another way, showed by Delph (<a class="reference internal" href="#delph2005">[Delph2005]</a>), to obtain second Piola-Kirchhoff stress tensor using formula:</p>
+<div class="math">
+<span class="eqno">(38)</span>\[P_{i}^{\alpha\beta} = -\frac{1}{2\Omega_{i}}\sum_{j \neq i}{\frac{dW_{ij}(r_{ij})}{dr_{ij}} \frac{R_{ij}^{\alpha}R_{ij}^{\beta}}{R_{ij}}}\]</div>
+<p>where <span class="math">\({\bf R_{ij}}={\bf X}_j-{\bf X}_i\)</span> - the distance between particles in reference confuguration.</p>
+<p>The Eq. <a href="#equation-eqstress3">(36)</a> were modified for a <strong>spherical geometry</strong> by Zandi and Reguera (<a class="reference internal" href="#zandi2005">[Zandi2005]</a>) to describe the stress measures of icosahedral shells. They derived formulas in terms of spherical basis <span class="math">\(({\bf e}_r, {\bf e}_{\phi}, {\bf e}_\theta)\)</span>, which correspond to <em>radial</em>, <em>azimutal</em> and <em>polar unit vectors</em>, respectively. According to this geometry, stress measures can be defined as follow:</p>
+<div class="math" id="equation-eqstress9">
+<span class="eqno">(39)</span>\[\begin{split}\begin{split}
+&amp;(\sigma_{T})_{i} = - \frac{1}{2 \Omega^{2D}} \sum_{j \neq i}{ \frac{dW_{ij}(r_{ij})}{dr_{ij}}\frac{(r_{ij} \cdot {\bf e}_{\theta})^{2} + (r_{ij} \cdot {\bf e}_{\phi})^{2}}{2 r_{ij}} } \text{ - lateral (tangential) component of stress}, \\
+&amp;(\sigma_{\theta\phi})_{i} = - \frac{1}{2 \Omega^{2D}} \sum_{j \neq i}{ \frac{dW_{ij}(r_{ij})}{dr_{ij}}(r_{ij} \cdot {\bf e}_{\theta})(r_{ij} \cdot {\bf e}_{\phi})} \text{ - ($45^o$)-shear component of stress}, \\
+&amp;(\sigma_{R})_{i} = - \frac{1}{2 \Omega^{3D}} \sum_{j \neq i}{ \frac{dW_{ij}(r_{ij})}{dr_{ij}}(r_{ij} \cdot {\bf e}_{r})^{2}} \text{ - radial component of stress}, \\
+\end{split}\end{split}\]</div>
+<p>First two stress components are defined in-plane as the projection on the spherical surface, therefore the volume element, <span class="math">\(\Omega^{2D}\)</span>, corresponding to particle is also in-plane, i.e. area. The third stress component, radial, is still three-dimentional (3D), therefore <span class="math">\(\Omega^{3D}\)</span> is atomic volume, as described above.</p>
+</div>
+</div>
+<div class="section" id="using-tensorscalculator">
+<span id="usingtc"></span><h1>Using TensorsCalculator<a class="headerlink" href="#using-tensorscalculator" title="Permalink to this headline">¶</a></h1>
+<p>To build executable file change directory to the TensorsCalculator/src/ type in command line:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">make</span>
+</pre></div>
+</div>
+<p>The approaches described in a Section <a class="reference internal" href="#numerappr"><em>Numerical approaches</em></a> are implemented in TensorsCalculator (TC) program package, which allows to calculate and visualize the distribution of a stress/strain measure on a surface of considered biological particle. There are two regimes available in TC: <strong>tensor computing regime</strong> and <strong>tensor visualization regime</strong>. Running TC requires presence of the following files:</p>
+<ul class="simple">
+<li>Structure file: file of the coarse-grained structure in <em>.pdb</em> format.</li>
+<li>Topology file: file of the coarse-grained structure topology in Gromacs <em>.top</em> format (see <a class="reference external" href="http://sop-gpu.readthedocs.org/">SOP-GPU documentation</a> for details).</li>
+<li>Trajectory file: file of coordinates of a system in coarse-grained representation, in <em>.dcd</em> format. Note: the trajectory as well as initial <em>.pdb</em> structure should contain only the atoms of a considered biomolecule or its part (no water, ions, mica surface or tip atoms).</li>
+<li>If running TC just in visualization regime, tensor files <em>.tnsr</em> are also required.</li>
+</ul>
+<p>All these as well as other parameters should be specify in configuration file (see Section <a class="reference internal" href="#inputpar"><em>Input parameters file</em></a>). To run TC, type in terminal:</p>
+<div class="highlight-python"><pre>tensors config_file.config</pre>
+</div>
+<p>The program will generate output files with the atomic tensors values arranged in <em>.tnsr</em> format or/and <em>.pdb</em> format for visualization.</p>
+<div class="section" id="format-tnsr">
+<span id="tnsrfile"></span><h2>Format <em>.tnsr</em><a class="headerlink" href="#format-tnsr" title="Permalink to this headline">¶</a></h2>
+<p>The calculated values of atomic tensors can be written out in output files, in order to use them later for visualization. Tensor values file <em>.tnsr</em> has one-to-one correspondance with <em>.dcd</em> trajectory file and each frame is separated by the word <tt class="docutils literal"><span class="pre">END</span></tt>:</p>
+<div class="highlight-python"><pre>-------(a)--(b)-(c)-(d)-(e)------(f)---
+ATOM      1 ALA    1 A  A1    -2.00000 ... 2.50000
+ATOM      2 ALA    2 A  A1    -3.00000 ... 3.50000
+ATOM      3 ALA    3 A  A1    -4.00000 ... 4.50000
+...</pre>
+</div>
+<p>(a): atom ID;
+(b): residue name;
+(c): redidue number;
+(d): chain identificator;
+(e): segment identificator;
+(f): tensor components;</p>
+<p>Note: depending on calculating tensor type and the output value, there may be from 1 to 9 components, written at position (f). One component if output is scalar (energy distribution), three components is output is vector (spherical tensors disribution) and nine components if output is the second-ranked tensor, i.e. matrix (stress or strain distribution).</p>
+</div>
+<div class="section" id="tensors-calculation">
+<h2>Tensors calculation<a class="headerlink" href="#tensors-calculation" title="Permalink to this headline">¶</a></h2>
+<p>Using TC one can compute the following measures:</p>
+<ul class="simple">
+<li>Potential energy distribution: total potential energy, calculated according to Eq. <a href="#equation-usop">(24)</a> for each atom in the system.</li>
+<li>Stress tensor distribution: Cauchy stress tensor (Eq. <a href="#equation-eqstress4">(19)</a>) calculated per atom using Eq. <a href="#equation-eqstress3">(36)</a>.</li>
+<li>Spherical tensors distribution: stress tensor projected along the combination of spherical unit vectors, calculated per atom for an object possesing spherical geometry (Eq. <a href="#equation-eqstress9">(39)</a>).</li>
+<li>Strain tensor distribution: calculation of the Green strain tensor (Eq. <a href="#equation-eqstrain14">(12)</a>) per atom, the deformation gradient tensor (Eq. <a href="#equation-eqstrain4">(3)</a>) is also calculted as intermediate using Eq. <a href="#equation-defgradnum">(31)</a>. If required, atomic stretch tensor (Eq. <a href="#equation-eqstrain16">(14)</a>) can be calculated within the strain tensor option using Eq. <a href="#equation-eqstrain21">(32)</a>.</li>
+</ul>
+</div>
+<div class="section" id="tensors-visualization">
+<h2>Tensors visualization<a class="headerlink" href="#tensors-visualization" title="Permalink to this headline">¶</a></h2>
+<p>If tensor files already exist, they can be visualized separately from calculation. Most of the time it is required if appropriate representation of the values is sought. Visualization regime requires presence of tensor files (see Section <a class="reference internal" href="#tnsrfile"><em>Format .tnsr</em></a>) as well as structure and trajectory file in order to produce output file in PDB format with multiple frames. This PDB file can be uploaded in <a class="reference external" href="http://www.ks.uiuc.edu/Research/vmd/">VMD</a> (<a class="reference internal" href="#humphrey1996">[Humphrey1996]</a>) using TCL script (see Section <a class="reference internal" href="#tclscrpt"><em>Example of VMD TCL script</em></a> below).</p>
+<p>Since a tensor value has nine components, in order to obtain scalar value for visualization, TC calculates projection of the tensor on a preferred direction (normal vector). Hence, separating tensor into two components: normal and shear (Eqs. <a href="#equation-eqstress10">(17)</a> and <a href="#equation-eqstress11">(18)</a>, see Section <a class="reference internal" href="#theorstress"><em>Stress</em></a> for details). The normal vector should be specified in configuration file (see Section <a class="reference internal" href="#inputpar"><em>Input parameters file</em></a> below). The normal and shear components of the tensor will be written out in <em>occupancy</em> and <em>beta</em> columns of the output PDB file, respectively. In case of potential energy distribution, the scalar atomic value will be written out in the <em>occupancy</em> column only. In case of spherical tensor, all three values of the lateral, <span class="math">\(45^o\)</span>-shear and radial stresses will be written out in <em>occupancy</em>, <em>beta</em> and <em>charge</em> columns of the PDB file, respectively.</p>
+</div>
+</div>
+<div class="section" id="input-parameters-file">
+<span id="inputpar"></span><h1>Input parameters file<a class="headerlink" href="#input-parameters-file" title="Permalink to this headline">¶</a></h1>
+<p>The TC program can work both with coarse-grained and all-atomic representations of the system and trajectory, transforming all-atom structure and trajectory into coarse-grained and saving coarse-grained trajectory file separately. However, it still requires as an input to have topology file in <em>.top</em> format, which can be obtained running <tt class="docutils literal"><span class="pre">sop-top</span></tt> utility of the <a class="reference external" href="http://sop-gpu.readthedocs.org/">SOP-GPU package</a>.</p>
+<div class="section" id="general-parameters">
+<h2>General parameters<a class="headerlink" href="#general-parameters" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>name</strong> <em>&lt;protein name&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Optional.</p>
+<p>Purpose: Name, assigned to the protein. Used mostly for files naming.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>structure</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required.</p>
+<p>Purpose: Path to the structure coordinates file in PDB format either in all-atom or coarse-grained representation. This coordinates are also taken as <em>reference</em> configuration for calculation of stress and strain tensors.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>topology</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required.</p>
+<p>Purpose:  Path to the structure topology file in Gromacs-like format <em>.top</em>.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>dcd</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required.</p>
+<p>Purpose:  Path to the trajectory coordinates file in <em>.dcd</em> format.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>allAtom</strong> <em>&lt;yes/no&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Boolean.</p>
+<p>Status: Optional.</p>
+<p>Default value: No.</p>
+<p>Purpose: Specifies if initial srtucture and trajectory files are in all-atom representation, rather than coarse-grained.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>dcdCa</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required if <strong>allAtom</strong> is <em>on</em>.</p>
+<p>Purpose:  Path to the trajectory coordinates file in <em>.dcd</em> format saved for coarse-grained representation.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>initialFrame</strong> <em>&lt;frame number&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Integer.</p>
+<p>Status: Optional.</p>
+<p>Default value: 0;</p>
+<p>Purpose:  Number of an initial frame to start calculations and visualization. If one performes just visualization of tensors, the <strong>initialFrame</strong> number should be in consistence with tensor input files initial frame.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>frameCount</strong> <em>&lt;number of frames&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Integer.</p>
+<p>Status: Optional.</p>
+<p>Default value: 1;</p>
+<p>Purpose:  Number of frames, started from the <strong>initialFrame</strong>, using for tensor calculation/visualization. If one performes just visualization of tensors, the <strong>frameCount</strong> number should be in consistence with the amount of frames in tensor input files.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>compute</strong> <em>&lt;yes/no&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Boolean.</p>
+<p>Status: Optional.</p>
+<p>Default value: Yes.</p>
+<p>Purpose: Run calculation of the tensor measures as despribed in Section <a class="reference internal" href="#usingtc"><em>Using TensorsCalculator</em></a> for a structure and trajectory specified in <strong>structure</strong> and <strong>dcd</strong> respectively.</p>
+</div></blockquote>
+</div>
+<div class="section" id="tensor-visualization-parameters">
+<h2>Tensor visualization parameters<a class="headerlink" href="#tensor-visualization-parameters" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>printPDB</strong> <em>&lt;yes/no&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Boolean.</p>
+<p>Status: Optional.</p>
+<p>Default value: Yes.</p>
+<p>Purpose: Create PDB files for visualization of the tensor measures as despribed in Section <a class="reference internal" href="#usingtc"><em>Using TensorsCalculator</em></a> using existing tensor files <em>.tnsr</em>.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>average</strong> <em>&lt;string&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: &#8220;no&#8221;/&#8221;cutoffAv&#8221;/&#8221;cutoffSum&#8221;/&#8221;segmentAv&#8221;/&#8221;segmentSum&#8221;.</p>
+<p>Status: Optional.</p>
+<p>Default value: &#8220;no&#8221;.</p>
+<p>Purpose: Specifies if averaging or summation for an atom is required for better representation: average over all atoms within cut-off distance (<strong>cutoffAv</strong>), summation over all atoms within cut-off distance (<strong>cutoffSum</strong>), averaging over all atoms in each segment (<strong>segmentAv</strong>) and summation over all atoms in each segment (<strong>segmentSum</strong>). Valid only if <strong>printPDB</strong> is <em>on</em>.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>normalVector</strong> <em>&lt;string&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: &#8220;endtoend&#8221;/&#8221;vector&#8221;.</p>
+<p>Status: Required if <strong>printPDB</strong> is <em>on</em> .</p>
+<p>Default value: &#8220;vector&#8221;.</p>
+<p>Purpose: Specifies normal vector to calculate normal and shear components of the tensor (see Secton <a class="reference internal" href="#theorstress"><em>Stress</em></a>). If &#8220;endtoend&#8221; the normal vector will be calculated as the end-to-end vector between two given particles.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>normalDirection</strong> <em>&lt;x, y, z normalized coordinates&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Vector.</p>
+<p>Status: Required if <strong>normalVector</strong> is <em>vector</em>.</p>
+<p>Purpose: Direction of the normal vector, using to obtain normal and shear components of the tensor.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>end1/end2</strong> <em>&lt;residue ID&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Integer.</p>
+<p>Status: Required if <strong>normalVector</strong> is <em>endtoend</em>.</p>
+<p>Purpose: Direction of the normal vector, using to obtain normal and shear components of the tensor.</p>
+</div></blockquote>
+</div>
+<div class="section" id="energy-distribution-parameters">
+<h2>Energy distribution parameters<a class="headerlink" href="#energy-distribution-parameters" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>energy</strong> <em>&lt;on/off&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Boolean.</p>
+<p>Status: Optional.</p>
+<p>Default value: Off.</p>
+<p>Purpose: Switching on/off calculation/visualization of the potential energy distribution per atom (Eq. <a href="#equation-usop">(24)</a>).</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>outputEnergy</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required if <strong>energy</strong> is <em>on</em>.</p>
+<p>Purpose:  Path to the output tensor file in <em>.tnsr</em> format with the values of the atomic potential energy.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>outputPDBEnergy</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required if <strong>energy</strong> is <em>on</em>.</p>
+<p>Purpose:  Path to the PDB output file with energy values written out in <em>occupancy</em> column.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>inputEnergy</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required if <strong>energy</strong> is <em>on</em> and <strong>compute</strong> is <em>off</em>.</p>
+<p>Purpose:  Path to the input tensor file in <em>.tnsr</em> format.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>energyScaleFactor</strong> <em>&lt;scale factor&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Float.</p>
+<p>Status: Optional.</p>
+<p>Default value: 1.0.</p>
+<p>Purpose: When specified, the value written out in PDB file will be multiplied by this factor. Used for better representation big/small values, which do not fit PDB column.</p>
+</div></blockquote>
+<p>Stress distribution parameters:</p>
+<ul class="simple">
+<li><strong>cauchyStress</strong> <em>&lt;on/off&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Boolean.</p>
+<p>Status: Optional.</p>
+<p>Default value: Off.</p>
+<p>Purpose: Switching on/off calculation/visualization of the Cauchy stress distribution per atom (Eq. <a href="#equation-eqstress3">(36)</a>).</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>outputCauchyStress</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required if <strong>cauchyStress</strong> is <em>on</em>.</p>
+<p>Purpose:  Path to the output file in <em>.tnsr</em> format with the components of the atomic Cauchy stress tensor.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>outputPDBCauchyStress</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required if <strong>cauchyStress</strong> is <em>on</em>.</p>
+<p>Purpose:  Path to the PDB output file with Cauchy stress tensor normal and shear components written out in <em>occupancy</em> and <em>beta</em> columns, respectively.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>inputCauchyStress</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required if <strong>cauchyStress</strong> is <em>on</em> and <strong>compute</strong> is <em>off</em>.</p>
+<p>Purpose:  Path to the input tensor file in <em>.tnsr</em> format.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>cauchyScaleFactor</strong> <em>&lt;scale factor&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Float.</p>
+<p>Status: Optional.</p>
+<p>Default value: 1.0.</p>
+<p>Purpose: When specified, the value in PDB file will be multiplied by this factor. Used for better representation big/small values, which do not fit PDB column.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>sphereStress</strong> <em>&lt;on/off&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Boolean.</p>
+<p>Status: Optional.</p>
+<p>Default value: Off.</p>
+<p>Purpose: Switching on/off calculation/visualization of the Cauchy stress projected on spherical unit vectors (Eq. <a href="#equation-eqstress9">(39)</a>).</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>outputSphereStress</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required if <strong>sphereStress</strong> is <em>on</em>.</p>
+<p>Purpose:  Path to the output file in <em>.tnsr</em> format with the components of the atomic Cauchy stress tensor projected into spherical unit vectors.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>outputPDBSphereStress</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required if <strong>sphereStress</strong> is <em>on</em>.</p>
+<p>Purpose:  Path to the PDB output file with the lateral, <span class="math">\((45^o)\)</span>-shear and radial spherical stress tensor components written out in <em>occupancy</em>, <em>beta</em> and <em>charge</em> columns, respectively.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>inputSphereStress</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required if <strong>sphereStress</strong> is <em>on</em> and <strong>compute</strong> is <em>off</em>.</p>
+<p>Purpose:  Path to the input tensor file in <em>.tnsr</em> format.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>sphereScaleFactor</strong> <em>&lt;scale factor&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Float.</p>
+<p>Status: Optional.</p>
+<p>Default value: 1.0.</p>
+<p>Purpose: When specified, the value in PDB file will be multiplied by this factor. Used for better representation big/small values, which do not fit PDB column.</p>
+</div></blockquote>
+</div>
+<div class="section" id="strain-distribution-parameters">
+<h2>Strain distribution parameters<a class="headerlink" href="#strain-distribution-parameters" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>strain</strong> <em>&lt;on/off&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Boolean.</p>
+<p>Status: Optional.</p>
+<p>Default value: Off.</p>
+<p>Purpose: Switching on/off calculation/visualization of the Green&#8217;s strain distribution per atom (Eq. <a href="#equation-eqstrain14">(12)</a>).</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>outputGreenStrain</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required if <strong>strain</strong> is <em>on</em>.</p>
+<p>Purpose:  Path to the output file in <em>.tnsr</em> format with the components of the atomic Green&#8217;s strain tensor.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>outputPDBGreenStrain</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required if <strong>strain</strong> is <em>on</em>.</p>
+<p>Purpose:  Path to the PDB output file with the normal and shear strain tensor components written out in <em>occupancy</em> and <em>beta</em> columns, respectively.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>inputGreenStrain</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required if <strong>strain</strong> is <em>on</em> and <strong>compute</strong> is <em>off</em>.</p>
+<p>Purpose:  Path to the input tensor file in <em>.tnsr</em> format.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>strainScaleFactor</strong> <em>&lt;scale factor&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Float.</p>
+<p>Status: Optional.</p>
+<p>Default value: 1.0;</p>
+<p>Purpose: When specified, the value in PDB file will be multiplied by this factor. Used for better representation big/small values, which do not fit PDB column.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>stretch</strong> <em>&lt;on/off&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Boolean.</p>
+<p>Status: Optional.</p>
+<p>Default value: Off.</p>
+<p>Purpose: Switching on/off calculation/visualization of the stretch distribution per atom.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>outputStretch</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required if <strong>stretch</strong> is <em>on</em>.</p>
+<p>Purpose:  Path to the output file in <em>.tnsr</em> format with the components of the atomic stretch tensor (Eq. <a href="#equation-eqstrain21">(32)</a>).</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>outputPDBStretch</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required if <strong>stretch</strong> is <em>on</em>.</p>
+<p>Purpose:  Path to the PDB output file with the normal and shear stretch tensor components written out in <em>occupancy</em> and <em>beta</em> columns, respectively.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>inputStretch</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Required if <strong>stretch</strong> is <em>on</em> and <strong>compute</strong> is <em>off</em>.</p>
+<p>Purpose:  Path to the input tensor file in <em>.tnsr</em> format.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>stretchScaleFactor</strong> <em>&lt;scale factor&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Float.</p>
+<p>Status: Optional.</p>
+<p>Default value: 1.0.</p>
+<p>Purpose: When specified, the value in PDB file will be multiplied by this factor. Used for better representation big/small values, which do not fit PDB column.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>outputDeformGradient</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Optional.</p>
+<p>Purpose:  Path to the output file in <em>.tnsr</em> format with the components of the atomic deformation gradient tensor (Eq. <a href="#equation-defgradnum">(31)</a>).</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>outputPDBDeformGradient</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Optional.</p>
+<p>Purpose:  Path to the PDB output file with the normal and shear deformation gradient tensor components written out in <em>occupancy</em> and <em>beta</em> columns, respectively.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>inputDeformGradient</strong> <em>&lt;filename&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: String.</p>
+<p>Status: Optional.</p>
+<p>Purpose:  Path to the input tensor file in <em>.tnsr</em> format.</p>
+</div></blockquote>
+<ul class="simple">
+<li><strong>deformGradientWeightCovalent, deformGradientWeightNative, deformGradientWeightRepulsive</strong> <em>&lt;weight factors&gt;</em></li>
+</ul>
+<blockquote>
+<div><p>Type: Float.</p>
+<p>Status: Optional.</p>
+<p>Default value: 1.0, 1.0, 1.0.</p>
+<p>Purpose: Weight factor for covalent, native and repulsive interactions, used in Eq. <a href="#equation-defgradAD">(30)</a>.</p>
+</div></blockquote>
+</div>
+<div class="section" id="example-of-vmd-tcl-script">
+<span id="tclscrpt"></span><h2>Example of VMD TCL script<a class="headerlink" href="#example-of-vmd-tcl-script" title="Permalink to this headline">¶</a></h2>
+<p>This TCL script can be utilize to visualize tensors using <a class="reference external" href="http://www.ks.uiuc.edu/Research/vmd/">VMD software</a> (<a class="reference internal" href="#humphrey1996">[Humphrey1996]</a>):</p>
+<div class="highlight-python"><pre>set fname &lt;tensorPDBOutput&gt;.pdb
+mol new $fname waitfor all
+set all [atomselect top all]
+set frame 0
+set in [open $fname r]
+set occupancy {}
+while { [gets $in line] != -1 } {
+   switch -- [string range $line 0 3] {
+      END {
+             $all frame $frame
+             $all set user $occupancy
+             set occupancy {}
+             incr frame
+           }
+       ATOM {
+               #column numbers changed to reflect occupancy column
+               lappend occupancy [string range $line 54 60];
+            }
+   }
+}</pre>
+</div>
+<p>To load the script run the following command in VMD terminal window:</p>
+<div class="highlight-python"><pre>play &lt;script_name&gt;.vmd</pre>
+</div>
+<p>By changing the column numbers in the line <tt class="docutils literal"><span class="pre">lappend</span> <span class="pre">occupancy</span> <span class="pre">[string</span> <span class="pre">range</span> <span class="pre">\$line</span> <span class="pre">54</span> <span class="pre">60];</span></tt> the appropriate column of PDB file can be specified.</p>
+<table class="docutils citation" frame="void" id="dill2006" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Dill2006]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id3">2</a>, <a class="fn-backref" href="#id5">3</a>)</em> E. H. Dill, <em>Continuum Mechanics: Elasticity, Plasticity, Viscoelasticity.</em> Germany: CRC Press, 2006.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="landau1970" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Landau1970]</td><td><em>(<a class="fn-backref" href="#id2">1</a>, <a class="fn-backref" href="#id4">2</a>)</em> L. D. Landau and E. M. Lifshitz, <em>Theory of elasticity.</em> Pergamon Press Ltd., 1970.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="bonet2008" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[Bonet2008]</a></td><td>J. Bonet and R. D. Wood, <em>Nonlinear Continuum Mechanics for Finite Element Analysis</em>. Cambridge University Press, 2008.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="horstemeyer1999" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id8">[Horstemeyer1999]</a></td><td>M. F. Horstemeyer and M. I. Baskes (1999) &#8220;Strain tensors at the atomic scale,&#8221; <em>MRS Proceedings</em> <strong>578</strong>: 15–20.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="gullett2008" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Gullett2008]</td><td><em>(<a class="fn-backref" href="#id9">1</a>, <a class="fn-backref" href="#id10">2</a>)</em> P. M. Gullett, M. F. Horstemeyer, M. I. Baskes and H. Fang (2008) &#8220;A deformation gradient tensor and strain tensors for atomistic simulations,&#8221; <em>Modeling Simul. Matter. Sci. Eng.</em> <strong>16</strong> (1): 015001.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="basinski1971" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id12">[Basinski1971]</a></td><td>Z. S. Basinski, M. S. Duesbery, and R. Taylor (1971) &#8220;Influence of shear stress on screw dislocations in a model sodium lattice,&#8221; <em>Can. J. Phys.</em> <strong>49</strong> (16): 2160-2180.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="cormier2001" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Cormier2001]</td><td><em>(<a class="fn-backref" href="#id13">1</a>, <a class="fn-backref" href="#id17">2</a>)</em> J. Cormier, J. M. Rickman, and T. J. Delph (2001) &#8220;Stress calculation in atomistic simulations of perfect and imperfect solids,&#8221; <em>J. Appl. Phys.</em> <strong>89</strong>: 99-104.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="delph2005" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Delph2005]</td><td><em>(<a class="fn-backref" href="#id14">1</a>, <a class="fn-backref" href="#id18">2</a>)</em> T. J. Delph (2005) &#8220;Local stresses and elastic constants at the atomic scale,&#8221; <em>Proc. R. Soc. A</em> <strong>461</strong>: 1869-1888.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="ishikura2012" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id15">[Ishikura2012]</a></td><td>T. Ishikura, T. Hatano, and T. Yamato (2012) &#8220;Atomic stress tensor analysis of proteins,&#8221; <em>Chem. Phys. Lett.</em> <strong>539-540</strong>: 144-150.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="hardy1982" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id16">[Hardy1982]</a></td><td>R. J. Hardy (1982) &#8220;Formulas for determining local properties in molecular dynamics simulations: Shock waves,&#8221; <em>J. Chem. Phys.</em> <strong>76</strong> (1): 622-628.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="zandi2005" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id19">[Zandi2005]</a></td><td>R. Zandi and D. Reguera (2005) &#8220;Mechanical properties of viral capsids,&#8221; <em>Phys. Rev. E</em> <strong>72</strong>: 021917.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="humphrey1996" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Humphrey1996]</td><td><em>(<a class="fn-backref" href="#id21">1</a>, <a class="fn-backref" href="#id22">2</a>)</em> W. Humphrey, A. Dalke, and K. Schulten (1996) &#8220;VMD: visual molecular dynamics,&#8221; <em>J. Mol. Graphics</em> <strong>14</strong> (1): 33-38.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Theoretical background</a><ul>
+<li><a class="reference internal" href="#strain">Strain</a></li>
+<li><a class="reference internal" href="#stress">Stress</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#numerical-approaches">Numerical approaches</a><ul>
+<li><a class="reference internal" href="#numerstrain">Strain</a></li>
+<li><a class="reference internal" href="#numerstress">Stress</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-tensorscalculator">Using TensorsCalculator</a><ul>
+<li><a class="reference internal" href="#format-tnsr">Format <em>.tnsr</em></a></li>
+<li><a class="reference internal" href="#tensors-calculation">Tensors calculation</a></li>
+<li><a class="reference internal" href="#tensors-visualization">Tensors visualization</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#input-parameters-file">Input parameters file</a><ul>
+<li><a class="reference internal" href="#general-parameters">General parameters</a></li>
+<li><a class="reference internal" href="#tensor-visualization-parameters">Tensor visualization parameters</a></li>
+<li><a class="reference internal" href="#energy-distribution-parameters">Energy distribution parameters</a></li>
+<li><a class="reference internal" href="#strain-distribution-parameters">Strain distribution parameters</a></li>
+<li><a class="reference internal" href="#example-of-vmd-tcl-script">Example of VMD TCL script</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">TensorsCalculator package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/general.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="index.html" title="TensorsCalculator package"
+             >previous</a> |</li>
+        <li><a href="index.html">TensorsCalculator 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Olga Kononova, Valeri Barsegov.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

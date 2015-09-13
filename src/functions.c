@@ -423,15 +423,21 @@ void eigenDecompos3d(const double* m_init, double* e_val, double* e_vec){
 	e_val[8] = l3;
 
 }
-
+/*
 extern void makeCutOffAveraged(){
-	double* value = (double*)calloc(pdbData.atomCount, sizeof(double));
+	double* occupancy = (double*)calloc(pdbData.atomCount, sizeof(double));
+	double* beta = (double*)calloc(pdbData.atomCount, sizeof(double));
+	double* charge = (double*)calloc(pdbData.atomCount, sizeof(double));
 	int i, j;
 	Vector distance;
-	//average occupancy
+
 	for (i = 0; i < pdbData.atomCount; i++){
-		value[i] = pdbData.atoms[i].occupancy;
+		occupancy[i] = pdbData.atoms[i].occupancy;
 		pdbData.atoms[i].occupancy = 0.0;
+		beta[i] = pdbData.atoms[i].beta;
+		pdbData.atoms[i].beta = 0.0;
+		charge[i] = pdbData.atoms[i].charge;
+		pdbData.atoms[i].charge = 0.0;
 	}
 	int count;
 	for (i = 0; i < pdbData.atomCount; i++){
@@ -439,101 +445,98 @@ extern void makeCutOffAveraged(){
 		for (j = 0; j < pdbData.atomCount; j++){
 			copyVector(&distance, DCDtoVector(X[i]-X[j], Y[i]-Y[j], Z[i]-Z[j]));
 			if (distance.value < pairs_cutoff){
-				pdbData.atoms[i].occupancy += value[j];
+				pdbData.atoms[i].occupancy += occupancy[j];
+				pdbData.atoms[i].beta += beta[j];
+				pdbData.atoms[i].charge += charge[j];
 				count++;
 			}
 		}
-		if (!cutoffSumOn)
+		if (!cutoffSumOn){
 			pdbData.atoms[i].occupancy /= count;
-	}
-	//average beta
-	for (i = 0; i < pdbData.atomCount; i++){
-		value[i] = pdbData.atoms[i].beta;
-		pdbData.atoms[i].beta = 0.0;
-	}
-	for (i = 0; i < pdbData.atomCount; i++){
-		count = 0;
-		for (j = 0; j < pdbData.atomCount; j++){
-			copyVector(&distance, DCDtoVector(X[i]-X[j], Y[i]-Y[j], Z[i]-Z[j]));
-			if (distance.value < pairs_cutoff){
-				pdbData.atoms[i].beta += value[j];
-				count++;
-			}
-		}
-		if (!cutoffSumOn)
 			pdbData.atoms[i].beta /= count;
+			pdbData.atoms[i].charge /= count;
+		}
 	}
-	//average charge
+}
+*/
+
+extern void makeCutOffAveraged(){
+	double* occupancy = (double*)calloc(pdbData.atomCount, sizeof(double));
+	double* beta = (double*)calloc(pdbData.atomCount, sizeof(double));
+	double* charge = (double*)calloc(pdbData.atomCount, sizeof(double));
+	int i, j, id;
+
 	for (i = 0; i < pdbData.atomCount; i++){
-		value[i] = pdbData.atoms[i].charge;
+		occupancy[i] = pdbData.atoms[i].occupancy;
+		pdbData.atoms[i].occupancy = 0.0;
+		beta[i] = pdbData.atoms[i].beta;
+		pdbData.atoms[i].beta = 0.0;
+		charge[i] = pdbData.atoms[i].charge;
 		pdbData.atoms[i].charge = 0.0;
 	}
+	int count;
 	for (i = 0; i < pdbData.atomCount; i++){
 		count = 0;
-		for (j = 0; j < pdbData.atomCount; j++){
-			copyVector(&distance, DCDtoVector(X[i]-X[j], Y[i]-Y[j], Z[i]-Z[j]));
-			if (distance.value < pairs_cutoff){
-				pdbData.atoms[i].charge += value[j];
-				count++;
-			}
+		for (j = 0; j < bondsCount[i]; j++){
+			id = bonds[i * MAX_BONDS + j];
+			pdbData.atoms[i].occupancy += occupancy[id];
+			pdbData.atoms[i].beta += beta[id];
+			pdbData.atoms[i].charge += charge[id];
+			count++;
 		}
-		if (!cutoffSumOn)
+		for(j = 0; j < nativeCount[i]; j++){
+			id = native[i * MAX_NATIVE + j];
+			pdbData.atoms[i].occupancy += occupancy[id];
+			pdbData.atoms[i].beta += beta[id];
+			pdbData.atoms[i].charge += charge[id];
+			count++;
+		}
+		for (j = 0; j < pairsCount[i]; j++){
+			id = pairs[i * MAX_PAIRS + j];
+			pdbData.atoms[i].occupancy += occupancy[id];
+			pdbData.atoms[i].beta += beta[id];
+			pdbData.atoms[i].charge += charge[id];
+			count++;
+		}
+		if (!cutoffSumOn){
+			pdbData.atoms[i].occupancy /= count;
+			pdbData.atoms[i].beta /= count;
 			pdbData.atoms[i].charge /= count;
+		}
 	}
 }
 
 extern void makeSegmentAveraged(){
-	double* value = (double*)calloc(pdbData.atomCount, sizeof(double));
+	double* occupancy = (double*)calloc(pdbData.atomCount, sizeof(double));
+	double* beta = (double*)calloc(pdbData.atomCount, sizeof(double));
+	double* charge = (double*)calloc(pdbData.atomCount, sizeof(double));
 	int i, j;
 	Vector distance;
-	//average occupancy
+
 	for (i = 0; i < pdbData.atomCount; i++){
-		value[i] = pdbData.atoms[i].occupancy;
+		occupancy[i] = pdbData.atoms[i].occupancy;
 		pdbData.atoms[i].occupancy = 0.0;
+		beta[i] = pdbData.atoms[i].beta;
+		pdbData.atoms[i].beta = 0.0;
+		charge[i] = pdbData.atoms[i].charge;
+		pdbData.atoms[i].charge = 0.0;
 	}
 	int count;
 	for (i = 0; i < pdbData.atomCount; i++){
 		count = 0;
 		for (j = 0; j < pdbData.atomCount; j++){
 			if (strcmp(pdbData.atoms[i].segment, pdbData.atoms[j].segment) == 0){
-				pdbData.atoms[i].occupancy += value[j];
+				pdbData.atoms[i].occupancy += occupancy[j];
+				pdbData.atoms[i].beta += beta[j];
+				pdbData.atoms[i].charge += charge[j];
 				count++;
 			}
 		}
-		if (!segmentSumOn)
+		if (!segmentSumOn){
 			pdbData.atoms[i].occupancy /= count;
-	}
-	//average beta
-	for (i = 0; i < pdbData.atomCount; i++){
-		value[i] = pdbData.atoms[i].beta;
-		pdbData.atoms[i].beta = 0.0;
-	}
-	for (i = 0; i < pdbData.atomCount; i++){
-		count = 0;
-		for (j = 0; j < pdbData.atomCount; j++){
-			if (strcmp(pdbData.atoms[i].segment, pdbData.atoms[j].segment) == 0){
-				pdbData.atoms[i].beta += value[j];
-				count++;
-			}
-		}
-		if (!segmentSumOn)
 			pdbData.atoms[i].beta /= count;
-	}
-	//average charge
-	for (i = 0; i < pdbData.atomCount; i++){
-		value[i] = pdbData.atoms[i].charge;
-		pdbData.atoms[i].charge = 0.0;
-	}
-	for (i = 0; i < pdbData.atomCount; i++){
-		count = 0;
-		for (j = 0; j < pdbData.atomCount; j++){
-			if (strcmp(pdbData.atoms[i].segment, pdbData.atoms[j].segment) == 0){
-				pdbData.atoms[i].charge += value[j];
-				count++;
-			}
-		}
-		if (!segmentSumOn)
 			pdbData.atoms[i].charge /= count;
+		}
 	}
 }
 

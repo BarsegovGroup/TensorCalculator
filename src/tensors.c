@@ -5,8 +5,6 @@
  *      Author: olga
  */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "Tensors/cauchy_stress.h"
 #include "Tensors/sphere_stress.h"
 #include "Tensors/strain_tensor.h"
@@ -14,11 +12,10 @@
 #include "functions.h"
 #include "IO/topio.h"
 #include "IO/dcdio.h"
-#include "IO/tensorio.h"
 
 void makeCoarseGraining();
 
-int frameInit, frameCount;
+int frameInit, frameStride;
 
 int main(int argc, char *argv[]){
 
@@ -41,9 +38,6 @@ int main(int argc, char *argv[]){
 	getMaskedParameter(topFilename, "topology", "", 0); //topology file should be created using sop-top utility
 	loadTOP(topFilename); //!!!
 
-	fillContactLists();
-	if (totalPairs == 0) calculatePairs();
-
 	dcdFile = fopen(dcdFilename, "r");//!!!
 	dcd_read_header(dcdFile, dcdFilenameOrig, &N, &NFILE, &NPRIV, &NSAVC, &DELTA);
 	X = (float*)calloc(pdbData.atomCount, sizeof(float));
@@ -57,12 +51,17 @@ int main(int argc, char *argv[]){
 
 	frameInit = getIntegerParameter("frameInitial", 0, 1);
 	frameCount = getIntegerParameter("frameCount", 1, 1);
+	frameStride = getIntegerParameter("frameStride", 1, 1);
 
 	computeOn = getYesNoParameter("compute", 1, 1);
 	printPDBOn = getYesNoParameter("printPDB", 1, 1);
 	printDatOn = getYesNoParameter("printDAT", 0, 1);
 
-	if (computeOn) printf("Compute tensors.\n");
+	if (computeOn)
+		printf("Compute tensors.\n");
+
+	fillContactLists();
+	if (totalPairs == 0) calculatePairs();
 
 	char average[256]; //choice of average values printed in PDB
 	cutoffAveOn = 0;
@@ -134,13 +133,14 @@ int main(int argc, char *argv[]){
 	CONECT = 1;
 	while (!eof && frame < frameInit + frameCount) {
 		eof = dcd_read_frame(dcdFile, pdbData.atomCount, X, Y, Z);
-		//printf("Frame %d:\n", frame);
-		if (frame >= frameInit){
+		if ((frame >= frameInit) && frame % frameStride == 0){
+			printf("Frame %d:\n", frame);
 			for (t = 0; t < tensorsCount; t++){
 				if (computeOn){
 					tensors[t]->compute();
 					tensors[t]->write();
 				}
+
 				if (printPDBOn){
 					if (!computeOn) tensors[t]->read();
 					tensors[t]->printPDB();
@@ -149,10 +149,10 @@ int main(int argc, char *argv[]){
 					if (!computeOn) tensors[t]->read();
 					tensors[t]->printDAT();
 				}
-
 			}
 			CONECT = 0.0;
 		}
+
 		frame++;
 	}
 	for (t = 0; t < tensorsCount; t++)

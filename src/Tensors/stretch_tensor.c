@@ -111,6 +111,7 @@ inline void writeStretch(){
 }
 
 inline void printPDBStretch(){
+	printf("Printing PDB for stretch stress tensor...\n");
 	//if (strcpy(pdbStretchFilename, "") != 0){
 		double atomNormal;
 		double atomShear;
@@ -122,6 +123,8 @@ inline void printPDBStretch(){
 			pdbData.atoms[i].x = X[i];
 			pdbData.atoms[i].y = Y[i];
 			pdbData.atoms[i].z = Z[i];
+			if (isnan(atomShear)) atomShear = 0.0;
+			if (isnan(atomNormal)) atomNormal = 0.0;
 			pdbData.atoms[i].beta = atomShear * stretchScale;
 			pdbData.atoms[i].occupancy = atomNormal * stretchScale;
 			pdbData.atoms[i].charge = 0.0;
@@ -129,7 +132,8 @@ inline void printPDBStretch(){
 				pdbData.atoms[i].segment[0] = pdbData.atoms[i].chain;
 		}
 	//}
-
+	if (cutoffAveOn || cutoffSumOn) makeCutOffAveraged();
+	if (segmentAveOn || segmentSumOn) makeSegmentAveraged();
 	appendPDB(pdbStretchFilename, &pdbData, CONECT);
 }
 

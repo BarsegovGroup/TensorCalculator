@@ -13,6 +13,9 @@
 #include "math.h"
 #include "float.h"
 #include <string.h>
+#include "IO/tensorio.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 extern Vector getFENEDerivative_1(Vector dist);
 extern Vector getNativeDerivative_1(Vector dist);

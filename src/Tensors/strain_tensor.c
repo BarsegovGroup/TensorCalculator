@@ -126,6 +126,8 @@ inline void writeStrain(){
 
 inline void printPDBStrain(){
 
+	printf("Printing PDB for strain stress tensor...\n");
+
 	if (strcmp(pdbDeformGradientFilename, "") != 0) printPDBDeformGradient();
 
 	double atomNormal;
@@ -134,6 +136,8 @@ inline void printPDBStrain(){
 	int i;
 
 	for (i = 0; i < pdbData.atomCount; i++){
+		//if (Z[i] >= 0) normalVec.z = 1.0;
+		//else normalVec.z = -1.0;
 		calculateNormalShearComponent(atomGreenStrain[i], normalVec, &atomNormal, &atomShear);
 		pdbData.atoms[i].x = X[i];
 		pdbData.atoms[i].y = Y[i];
@@ -143,7 +147,8 @@ inline void printPDBStrain(){
 		if ( strcmp(pdbData.atoms[i].segment, "") == 0)
 			pdbData.atoms[i].segment[0] = pdbData.atoms[i].chain;
 	}
-
+	if (cutoffAveOn || cutoffSumOn) makeCutOffAveraged();
+	if (segmentAveOn || segmentSumOn) makeSegmentAveraged();
 	appendPDB(pdbGreenStrainFilename, &pdbData, CONECT);
 
 	if (strcmp(pdbStretchFilename, "") != 0) printPDBStretch();

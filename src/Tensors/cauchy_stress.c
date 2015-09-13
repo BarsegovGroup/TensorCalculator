@@ -152,6 +152,7 @@ inline void writeCauchyStress(){
 }
 
 inline void printPDBCauchyStress(){
+	printf("Printing PDB for Cauchy stress tensor...\n");
 	double atomNormal;
 	double atomShear;
 
