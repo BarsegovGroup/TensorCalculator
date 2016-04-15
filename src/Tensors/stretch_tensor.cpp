@@ -99,30 +99,19 @@ void readStretch(){
 }
 
 void writeStretch(){
-	//if (strcpy(outStretchFilename, "") != 0){
+	if (strcmp(outStretchFilename, "") != 0){
 		printf("Printing stretch tensor...\n");
-		int i,j;
+		int i;
 
 		outStretch = fopen(outStretchFilename, "a");
-		//fprintf(outStretch, "lalala\n");
 		for (i = 0; i < pdbData.atomCount; i++){
-			//pdbData.atoms[i].segment[0] = pdbData.atoms[i].chain;
-			//pdbData.atoms[i].segment[1] = '\0';
 			if ( strcmp(pdbData.atoms[i].segment, "") == 0)
 				pdbData.atoms[i].segment[0] = pdbData.atoms[i].chain;
 			printAtomTensorToFile(outStretch, pdbData.atoms[i], atomStretch[i]);
-
-			//printf("ATOM  %5d %3s %4d %c %4s ",
-			//		pdbData.atoms[i].id, pdbData.atoms[i].resName, pdbData.atoms[i].resid, pdbData.atoms[i].chain, pdbData.atoms[i].segment);
-			//for (j = 0; j < 9; j++)
-			//	printf("%10.5f", atomStretch[j]);
-			//printf("\n");
-
 		}
-		//if (outStretch == NULL) printf("File does not exist\n");
 		fprintf(outStretch, "END\n");
 		fclose(outStretch);
-	//}
+	}
 }
 
 void printPDBStretch(){

@@ -9,7 +9,6 @@
 #include "Tensors/sphere_stress.h"
 #include "Tensors/strain_tensor.h"
 #include "energy.h"
-//#include "functions.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -206,7 +205,6 @@ int main(int argc, char *argv[]){
 
 
 void makeCoarseGraining(){
-/*
 	printf("Creating coarse-grained structure...\n");
 	char dcdFilename[256];
 	char pdbFilename[256];
@@ -262,5 +260,4 @@ void makeCoarseGraining(){
 	fclose(dcdAllAtomFile);
 	fclose(dcdOutFile);
 	printf("Done creating coarse-grained structure.\n");
-*/
 }

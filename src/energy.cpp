@@ -92,7 +92,7 @@ inline void computeEnergy(){
 	int atom, j, id1, id2;
 	Vector atomDistance;
 	double totalFENEEnergy, totalNativeEnergy, totalRepulEnergy;
-	double tmp = 0.0;
+	//double tmp = 0.0;
 	double tot = 0.0;
 
 	for (atom = 0; atom < pdbData.atomCount; atom++)

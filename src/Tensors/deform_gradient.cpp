@@ -107,9 +107,6 @@ void computeDeformGradient(){
 
 			multVectors(atomDistance, atomDistance, matrI);
 			multScalarMatrix(matrI, weightCov);
-			//if (atom < 5){
-			//	printf("%d-%d (%f): %f %f %f\n", id1, id2, weightCov, matrI[0], matrI[3], matrI[8]);
-			//}
 			addMatrix(matrD, matrI);
 
 			multVectors(atomRefDistance, atomDistance, matrI);
@@ -164,14 +161,12 @@ void readDeformGradient(){
 void writeDeformGradient(){
 	//if (strcmp(outDeformGradientFilename, "") != 0){
 		printf("Printing deformation gradient tensor...\n");
-		int i, j;
+		int i;
 
 		outDeformGradient = fopen(outDeformGradientFilename, "a");
 		for (i = 0; i < pdbData.atomCount; i++){
 			if ( strcmp(pdbData.atoms[i].segment, "") == 0)
 				pdbData.atoms[i].segment[0] = pdbData.atoms[i].chain;
-			//pdbData.atoms[i].segment[0] = pdbData.atoms[i].chain;
-			//pdbData.atoms[i].segment[1] = '\0';
 			printAtomTensorToFile(outDeformGradient, pdbData.atoms[i], atomDeformGradient[i]);
 		}
 		fprintf(outDeformGradient, "END\n");
