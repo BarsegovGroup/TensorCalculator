@@ -1,0 +1,26 @@
+These are the examples of the simples usage of TensorsCalculator.
+
+1. Use file "config_calculate" to run the tensors computing: energy and Cauchy stress. The resulted files will be located at tensors folder. 
+
+2. Use file "config_vizualization" to run tensors visualization. The resulted files will be located at pdb folder.
+
+3. Modify file "load_occup.vmd" by specifying filename at the first line and column for reading occupancy or beta or charge. 
+
+4. Open VMD.  
+	i) Go to Extensions->Tk Console, change directory to the one, where load_occup.vmd is locate. 
+	ii) Type "play load_occup.vmd". Loading the structure may take some time. 
+	iii) Choose Coloring Method->Trajectory->User->User
+	iv) Check boxes with Update Selection Every Frame and Update Color Every Frame. You may also want to use smoothing sometime. 
+	v) Use color scale data range to adjust gradient of the color as needed. 
+	vi) Run trajectory to see the change of color in the molecule.
+
+-> WWpulling_0K: the pulling trajectory was obtain for an extremly high loading rate at 0 K temperature to eliminate thermal motions. 
+-> WWpulling_300K: the pulling trajectory was obtained at vf = 2.0 um/s with presence of hydrodynamic interactions, T = 300 K. 
+-> CCMV: indentation trajectory has only 81 frames, therefore the gradient of the colors in not smooth. Still, playing the trajectory slow, one can see accumulation of the "hot spots" around the area, where damage occurs. 
+
+Tips: 
+1. In PDB, segment id's should be specified as well as chain id's
+
+2. Be sure that dcd file used for computation is EXACTLY same as for printing PDB.
+
+3. First frame of the stretch distribution will have nan's, because at the beginning there is no any stretch (see definition).

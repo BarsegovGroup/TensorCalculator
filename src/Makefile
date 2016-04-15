@@ -1,37 +1,25 @@
-CXX				:= gcc
-LINKER				:= gcc -fPIC
-OBJDIR				:= obj
-CFLAGS				:= -O3 -g $(INCLUDES)
-LDFLAGS				:= -lrt -lm
+SOURCES=tensors.cpp IO/config_reader.cpp IO/dcdio.cpp IO/pdbio.cpp IO/topio.cpp functions.cpp IO/tensorio.cpp energy.cpp Tensors/cauchy_stress.cpp Tensors/sphere_stress.cpp Tensors/strain_tensor.cpp Tensors/deform_gradient.cpp Tensors/stretch_tensor.cpp
 
-include common.mk
+OBJDIR=obj
 
-# files
-TENSOR_SOURCES	:= \
-	functions.c \
-	energy.c \
-	IO/dcdio.c \
-	IO/pdbio.c \
-	IO/topio.c \
-	IO/config_reader.c \
-	IO/tensorio.c \
-	Tensors/cauchy_stress.c \
-	Tensors/deform_gradient.c \
-	Tensors/sphere_stress.c \
-	Tensors/strain_tensor.c \
-	Tensors/stretch_tensor.c \
-	tensors.c 
+OBJECTS=$(OBJDIR)/%.cpp.o: %.cpp
 
-all: tensorsCalc
+EXECUTABLE=tensors
 
-TENSOR_OBJS			:= $(call objects, $(TENSOR_SOURCES))
--include $(TENSOR_OBJS:.o=.d)
+dir_guard=@mkdir -p $(@D)
 
-tensorsCalc: $(TENSOR_OBJS)
-	$(LINKER) -o $@ $(TENSOR_OBJS) $(LDFLAGS)
+$(OBJDIR)/%.cpp.o: %.cpp
+	$(dir_guard)
+	g++ -Wall -o $@ -c $<
+
+objects = $(patsubst %.cpp, $(OBJDIR)/%.cpp.o, $(1))
+
+SOPGPU_OBJS := $(call objects, $(SOURCES))
+
+all: $(SOURCES) $(EXECUTABLE)
+
+$(EXECUTABLE): $(SOPGPU_OBJS)
+	g++ -Wall $(SOPGPU_OBJS) -o $@
 
 clean:
-	rm -f tensorsCalc
-	rm -rf "$(OBJDIR)"
-	
-.PHONY: makedirs clean all
+	rm -r obj/ tensors

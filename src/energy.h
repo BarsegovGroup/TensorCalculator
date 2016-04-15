@@ -20,19 +20,4 @@ inline void printPDBEnergy();
 inline void printDATEnergy();
 void destroyEnergy();
 
-Tensors energy;
-
-double* atomEnergy;
-
-char outEnergyFilename[256];
-FILE* outEnergy;
-
-char pdbEnergyFilename[256];
-FILE* pdbEnergy;
-
-char tnsrEnergyFilename[256];
-FILE* tnsrEnergy;
-
-double energyScale;
-
 #endif /* ENERGY_H_ */

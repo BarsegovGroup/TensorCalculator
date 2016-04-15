@@ -77,7 +77,9 @@ typedef struct {
 	SSBond* ssbonds;
 } PDB;
 
-SOP sop;
+extern SOP sop;
+extern PDB pdbData;
+
 /*
  * Public methods
  */
@@ -86,6 +88,5 @@ void writePDB(const char* filename, PDB* pdbData);
 void appendPDB(const char* filename, PDB* pdbData, int connect);
 void printAtom(Atom atomData);
 void printAtomToFile(FILE* file, Atom atomData);
-
 
 #endif /* PDBIO_H_ */

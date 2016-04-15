@@ -8,8 +8,9 @@
 #ifndef STRUCTURES_H_
 #define STRUCTURES_H_
 
-#include "IO/pdbio.h"
+//#include "IO/pdbio.h"
 #include "parameters.h"
+#include "IO/pdbio.h"
 
 typedef struct{
 	char name[100];
@@ -20,9 +21,6 @@ typedef struct{
 	void (*printDAT)();
 	void (*destroy)();
 } Tensors;
-
-Tensors **tensors;
-int tensorsCount;
 
 typedef struct{
 	double x;
@@ -37,54 +35,43 @@ typedef struct{
 
 } FuncParam;
 
-FuncParam funcParam;
+extern int frame;
+extern float* X;
+extern float* Y;
+extern float* Z;
 
-int* bonds;
-int* bondsCount;
-double* bondsR0;
+extern Tensors **tensors;
+extern int tensorsCount;
 
-int* native;
-int* nativeCount;
-double* nativeR0;
-double* nativeEh;
+extern int computeOn;
+extern int printPDBOn;
+extern int printDatOn;
 
-int* pairs;
-int* pairsCount;
+extern int stretchOn;
 
-PDB pdbData;
+extern FuncParam funcParam;
 
-FILE* dcdFile;
-char dcdFilenameOrig[BUF_SIZE];
-int N;
-int NFILE;
-int NSAVC;
-int NPRIV;
-float DELTA;
-int frameCount;
-int initFrame;
-int finFrame;
-float* X;
-float* Y;
-float* Z;
+extern int* bonds;
+extern int* bondsCount;
+extern double* bondsR0;
 
-int CONECT;
+extern int* native;
+extern int* nativeCount;
+extern double* nativeR0;
+extern double* nativeEh;
 
-Vector normalVec;
+extern int* pairs;
+extern int* pairsCount;
 
-long int totalPairs;
+extern int CONECT;
 
-int computeOn;
-int printPDBOn;
-int printDatOn;
+extern Vector normalVec;
 
-int cauchyOn;
-int sphereOn;
-int energyOn;
-int strainOn;
-int stretchOn;
-int cutoffAveOn;
-int cutoffSumOn;
-int segmentAveOn;
-int segmentSumOn;
+//long int totalPairs;
+
+extern int cutoffAveOn;
+extern int cutoffSumOn;
+extern int segmentAveOn;
+extern int segmentSumOn;
 
 #endif /* STRUCTURES_H_ */

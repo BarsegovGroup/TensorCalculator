@@ -7,7 +7,7 @@
 
 //#pragma once
 
-#include <stdio.h>
+//#include <stdio.h>
 
 extern FILE* dcd_open_write(FILE* dcd_file, char *dcd_filename);
 extern FILE* dcd_open_append(FILE* dcd_file, char *dcd_filename);

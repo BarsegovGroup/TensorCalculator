@@ -5,7 +5,6 @@
  *      Author: zhmurov
  */
 
-
 typedef struct {
 	int i;
 	int j;
@@ -16,6 +15,6 @@ typedef struct {
 	float c3;
 } TOPPair;
 
-
 extern void loadTOP(char* filename);
 extern void saveTOP(char* filename);
+extern void fillContactLists();

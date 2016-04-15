@@ -9,32 +9,25 @@
 #define DEFORM_GRADIENT_H_
 
 #include "../structures.h"
+#include "../functions.h"
 
 void createDeformGradientTensor();
 void initDeformGradient();
-inline void computeDeformGradient();
-inline void readDeformGradient();
-inline void writeDeformGradient();
-inline void printPDBDeformGradient();
-inline void printDATDeformGradient();
-inline void destroyDeformGradientTensor();
+void computeDeformGradient();
+void readDeformGradient();
+void writeDeformGradient();
+void printPDBDeformGradient();
+void printDATDeformGradient();
+void destroyDeformGradientTensor();
 
-Tensors deformGradientTensor;
+extern Tensors deformGradientTensor;
 
-double** atomDeformGradient;
-Vector* atomRefCoord;
+extern double** atomDeformGradient;
 
-char outDeformGradientFilename[256];
-FILE* outDeformGradient;
+extern FILE* tnsrDeformGradient;
 
-char pdbDeformGradientFilename[256];
-FILE* pdbDeformGradient;
+extern char outDeformGradientFilename[256];
 
-char tnsrDeformGradientFilename[256];
-FILE* tnsrDeformGradient;
-
-double weightCov;
-double weightNat;
-double weightRep;
+extern char pdbDeformGradientFilename[256];
 
 #endif /* DEFORM_GRADIENT_H_ */

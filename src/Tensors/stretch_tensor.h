@@ -9,29 +9,24 @@
 #define STRETCH_TENSOR_H_
 
 #include "../structures.h"
+#include "../functions.h"
 
 void createStretchTensor();
 void initStretch();
-inline void computeStretch();
-inline void readStretch();
-inline void writeStretch();
-inline void printPDBStretch();
-inline void printDATStretch();
-inline void destroyStretchTensor();
+void computeStretch();
+void readStretch();
+void writeStretch();
+void printPDBStretch();
+void printDATStretch();
+void destroyStretchTensor();
 
-Tensors stretchTensor;
+extern Tensors stretchTensor;
 
-double** atomStretch;
+extern FILE* tnsrStretch;
 
-char outStretchFilename[256];
-FILE* outStretch;
+extern char outStretchFilename[256];
 
-char pdbStretchFilename[256];
-FILE* pdbStretch;
+extern char pdbStretchFilename[256];
 
-char tnsrStretchFilename[256];
-FILE* tnsrStretch;
-
-double stretchScale;
 
 #endif /* STRETCH_TENSOR_H_ */
