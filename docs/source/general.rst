@@ -428,14 +428,14 @@ First two stress components are defined in-plane as the projection on the spheri
 
 .. _usingtc:
 
-Using TensorsCalculator
+Using TensorCalculator
 =======================
 
-To build executable file change directory to the TensorsCalculator/src/ type in command line::
+To build executable file change directory to the TensorCalculator/src/ type in command line::
 
   make
 
-The approaches described in a Section :ref:`numerAppr` are implemented in TensorsCalculator (TC) program package, which allows to calculate and visualize the distribution of a stress/strain measure on a surface of considered biological particle. There are two regimes available in TC: **tensor computing regime** and **tensor visualization regime**. Running TC requires presence of the following files:
+The approaches described in a Section :ref:`numerAppr` are implemented in TensorCalculator (TC) program package, which allows to calculate and visualize the distribution of a stress/strain measure on a surface of considered biological particle. There are two regimes available in TC: **tensor computing regime** and **tensor visualization regime**. Running TC requires presence of the following files:
 
 - Structure file: file of the coarse-grained structure in *.pdb* format. 
 - Topology file: file of the coarse-grained structure topology in Gromacs *.top* format (see `SOP-GPU documentation <http://sop-gpu.readthedocs.org/>`_ for details).

@@ -1,9 +1,9 @@
-.. TensorsCalculator documentation master file, created by
+.. TensorCalculator documentation master file, created by
    sphinx-quickstart on Thu May  7 18:33:17 2015.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-TensorsCalculator package
+TensorCalculator package
 =========================
 
 .. only:: html
@@ -15,6 +15,6 @@ TensorsCalculator package
 
    general.rst
 
-To download TensorsCalculator use the following `link <https://github.com/OlgaGKononova/TensorsCalculator/archive/master.zip>`_ .
+To download TensorCalculator use the following `link <https://github.com/OlgaGKononova/TensorCalculator/archive/master.zip>`_ .
 
 

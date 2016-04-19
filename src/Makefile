@@ -4,7 +4,7 @@ OBJDIR=obj
 
 OBJECTS=$(OBJDIR)/%.cpp.o: %.cpp
 
-EXECUTABLE=tensors
+EXECUTABLE=TensorCalculator
 
 dir_guard=@mkdir -p $(@D)
 
