@@ -88,5 +88,6 @@ void writePDB(const char* filename, PDB* pdbData);
 void appendPDB(const char* filename, PDB* pdbData, int connect);
 void printAtom(Atom atomData);
 void printAtomToFile(FILE* file, Atom atomData);
+void parseAtomLine(PDB* pdbData, char* line, int currentAtom);
 
 #endif /* PDBIO_H_ */

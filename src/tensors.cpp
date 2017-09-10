@@ -149,14 +149,14 @@ int main(int argc, char *argv[]){
 
 	char vector[256];
 	if (printPDBOn || printDatOn){
-		getMaskedParameter(vector, "normalVector", "vector", 1);
+		getMaskedParameter(vector, "normalVector", "&", 1);
 		if (strcmp(vector, "endtoend") == 0){
 			int end1 = getIntegerParameter("end1", 0, 0);
 			int end2 = getIntegerParameter("end2", 0, 0);
 			copyVector(&normalVec, DCDtoVector(pdbData.atoms[end2].x - pdbData.atoms[end2].x, pdbData.atoms[end2].y - pdbData.atoms[end1].y, pdbData.atoms[end2].z - pdbData.atoms[end1].z));
 			printf("Using end-to-end direction for normal vector: (%f, %f, %f)\n", normalVec.x, normalVec.y, normalVec.z);
 		}
-		else {
+		else if (strcmp(vector, "vector") == 0){
 			float vecX, vecY, vecZ;
 			getVectorParameter("normalDirection", &vecX, &vecY, &vecZ, 0, 0, 0, 0);
 			normalVec.x = (double)vecX;
@@ -164,6 +164,10 @@ int main(int argc, char *argv[]){
 			normalVec.z = (double)vecZ;
 			normalVec.value = sqrt(normalVec.x*normalVec.x + normalVec.y*normalVec.y + normalVec.z*normalVec.z);
 			printf("Normal vector direction: (%f, %f, %f)\n", normalVec.x, normalVec.y, normalVec.z);
+		}
+		else{
+			printf("First invariant, first principal and von Misses stresses will be calculated.\n");
+			normalVec.value = -1.0;
 		}
 	}
 
@@ -180,13 +184,12 @@ int main(int argc, char *argv[]){
 					tensors[t]->compute();
 					tensors[t]->write();
 				}
-
+				
+				if (!computeOn) tensors[t]->read();
 				if (printPDBOn){
-					if (!computeOn) tensors[t]->read();
 					tensors[t]->printPDB();
 				}
 				if (printDatOn){
-					if (!computeOn) tensors[t]->read();
 					tensors[t]->printDAT();
 				}
 			}
@@ -197,6 +200,9 @@ int main(int argc, char *argv[]){
 	}
 	for (t = 0; t < tensorsCount; t++)
 		tensors[t]->destroy();
+	
+	for (t = 0; t < tensorsCount; t++)
+		tensors[t]->runningAverage();
 
 	printf("Done!\n");
 

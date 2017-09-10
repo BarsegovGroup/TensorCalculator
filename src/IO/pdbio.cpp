@@ -16,7 +16,7 @@
 /*
  * Private methods
  */
-void parseAtomLine(PDB* pdbData, char* line, int currentAtom);
+//void parseAtomLine(PDB* pdbData, char* line, int currentAtom);
 void parseSSBondLine(PDB* pdbData, char* line, int currentSSBond);
 
 
@@ -39,7 +39,7 @@ void readPDB(const char* filename, PDB* pdbData){
 	char buffer[buf_size];
 	FILE* file = fopen(filename, "r");
 	if ( file != NULL ){
-		while(fgets(buffer, buf_size, file) != NULL){
+		while(fgets(buffer, buf_size, file) != NULL && strncmp(buffer, "END", 3) != 0){
 			if(strncmp(buffer,"SSBOND",6) == 0){
 				ss_count++;
 			}
@@ -59,7 +59,7 @@ void readPDB(const char* filename, PDB* pdbData){
 
 		rewind(file);
 
-		while(fgets(buffer, buf_size, file) != NULL){
+		while(fgets(buffer, buf_size, file) != NULL && strncmp(buffer, "END", 3) != 0){
 			char* pch = strtok(buffer, " ");
 			if(strcmp(pch, "SSBOND") == 0){
 				parseSSBondLine(pdbData, buffer, current_ss);
@@ -161,6 +161,7 @@ void parseAtomLine(PDB* pdbData, char* line, int currentAtom){
 	pdbData->atoms[currentAtom].z = atof(z);
 	pdbData->atoms[currentAtom].occupancy = atof(occupancy);
 	pdbData->atoms[currentAtom].beta = atof(beta);
+	pdbData->atoms[currentAtom].charge = 0.0;
 	strcpy(pdbData->atoms[currentAtom].segment, segment);
 #ifdef DEBUGPDBIO
 	printAtom(pdbData->atoms[currentAtom]);

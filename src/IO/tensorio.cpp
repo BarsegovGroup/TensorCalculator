@@ -41,7 +41,7 @@ int readAtomTensorFrame(FILE* file, double** atomTensorFrame){
 
 	while ( (fgets(buffer, bufSize, file) != NULL) && (strncmp(buffer, "END", 3) != 0) ){
 		pch = strtok(buffer, " ");
-		for (k = 0; k < 6; k++){
+		for (k = 0; k < 5; k++){
 			pch = strtok(NULL, " ");
 		}
 		//if (atomCount < 5) printf("%s\n", pch);
@@ -106,7 +106,7 @@ int readAtomValueFrame(FILE* file, double* atomEnergy){
 
 	while ( (fgets(buffer, bufSize, file) != NULL) && (strncmp(buffer, "END", 3) != 0) ){
 		pch = strtok(buffer, " ");
-		for (k = 0; k < 6; k++){
+		for (k = 0; k < 5; k++){
 			pch = strtok(NULL, " ");
 			//printf("%s\n", pch);
 		}

@@ -35,6 +35,9 @@ extern Vector DCDtoEphi(float x, float y, float z);
 //void calculatePairs();
 
 void calculateNormalShearComponent(const double* tensor, Vector n, double* normal, double* shear);
+void getInvariants(const double* tensor, Vector* Invar);
+double getVonMisses(const double* tensor);
+void getPrincipalStresses(const double* tensor, Vector* Princip);
 
 extern void inverseMatrix3d(const double* m_init, double* m_fin);
 extern void multVectors(const Vector A, const Vector B, double* C);
@@ -47,5 +50,6 @@ extern void eigenDecompos3d(const double* m_init, double* e_val, double* e_vec);
 
 extern void makeCutOffAveraged();
 extern void makeSegmentAveraged();
+extern void makeRunningAveraged(char* filename, int average);
 
 #endif /* FUNCTIONS_H_ */

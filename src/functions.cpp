@@ -179,6 +179,37 @@ void calculateNormalShearComponent(const double* tensor, Vector n, double* norma
 	else *shear = sqrtf(sqShear);
 }
 
+void getInvariants(const double* tensor, Vector* Invar){
+	Invar->x = tensor[0] + tensor[4] + tensor[8];
+	Invar->y = tensor[0]*tensor[4] + tensor[4]*tensor[8] + tensor[0]*tensor[8] - tensor[1]*tensor[1] - tensor[5]*tensor[5] - tensor[6]*tensor[6];
+	Invar->z = tensor[0]*tensor[4]*tensor[8] + 2.0*tensor[1]*tensor[5]*tensor[6] - tensor[1]*tensor[1]*tensor[8] - tensor[5]*tensor[5]*tensor[0] - tensor[6]*tensor[6]*tensor[4];
+}
+
+double getVonMisses(const double* tensor){
+	//double temp = (tensor[0]-tensor[4])*(tensor[0]-tensor[4]) + (tensor[4]-tensor[8])*(tensor[4]-tensor[8]) + (tensor[8]-tensor[0])*(tensor[8]-tensor[0]);
+	//temp += 6.0 * (tensor[1]*tensor[1] + tensor[5]*tensor[5] + tensor[6]*tensor[6]);
+	//return temp/2.0;
+	Vector temp;
+	getInvariants(tensor, &temp);
+	return sqrt(temp.x*temp.x - 3.0 * temp.y);
+}
+
+void getPrincipalStresses(const double* tensor, Vector* Princip){
+	double* vecs = (double*)calloc(9, sizeof(double));
+	double* vals = (double*)calloc(9, sizeof(double));
+	eigenDecompos3d(tensor, vals, vecs);
+	
+	Princip->x = -1000.0;
+	Princip->z = 1000.0;
+	Princip->y = 0.0;
+	int i;
+	for (i = 0; i < 9; i++){
+		if (vals[i] > Princip->x) Princip->x = vals[i];
+		if (vals[i] < Princip->z) Princip->z = vals[i];
+	}
+	Princip->y = tensor[0] + tensor[4] + tensor[8] - Princip->x - Princip->z;
+}
+
 void inverseMatrix3d(const double* m_init, double* m_fin){
 	double detM = 0.0f;
 	int i;
@@ -264,10 +295,11 @@ void multScalarMatrix(double* A, const double B){
 }
 
 void eigenDecompos3d(const double* m_init, double* e_val, double* e_vec){
-	double a, b, c, d, e, f;
+	//printf("Calculating eigenvalues and eigenvectors.\n");
+	double a, b, d, e, f;
 	a = m_init[0];
 	b = m_init[4];
-	c = m_init[8];
+	//c = m_init[8];
 	d = m_init[1];
 	e = m_init[2];
 	f = m_init[5];
@@ -279,15 +311,26 @@ void eigenDecompos3d(const double* m_init, double* e_val, double* e_vec){
 	}
 
 	double AA, BB, CC;
-	AA = -(a + b + c);
-	BB = -(e * e + f * f + d * d - a * b - b * c - a * c);
-	CC = -(a * b * c + 2.0f * d * f * e - e * e * b - f * f * a - d * d * c);
-
+	//AA = -(a + b + c);
+	//BB = -(e * e + f * f + d * d - a * b - b * c - a * c);
+	//CC = -(a * b * c + 2.0f * d * f * e - e * e * b - f * f * a - d * d * c);
+	
+	Vector invar;
+	getInvariants(m_init, &invar);
+	AA = -invar.x;
+	BB = invar.y;
+	CC = -invar.z;
+	
 	//printf("Characteristic polynomial: l^3 + %f*l^2 + %f*l + %f = 0.\n", AA, BB, CC);
 
 	double QQ, RR;
 	QQ = AA * AA/9.0 - BB/3.0;
 	RR = AA * AA * AA/27.0 - AA * BB/6.0 + CC/2.0;
+
+	if ( (QQ*QQ*QQ - RR*RR) < -0.1){
+		printf("Hyperbolic case! AA = %f, BB = %f, CC = %f, QQ = %f, RR = %f, SS = %f\n", AA, BB, CC, QQ, RR, QQ*QQ*QQ - RR*RR);
+		exit(0);
+	}		
 
 	if (QQ < 0)	printf("Trigonometric constants: Q = %f, R = %f.\n", QQ, RR);
 
@@ -435,4 +478,77 @@ void makeSegmentAveraged(){
 			pdbData.atoms[i].charge /= count;
 		}
 	}
+}
+
+void makeRunningAveraged(char* filename, int average){
+	printf("Making running average over %d frames out of %d frames for %s...\n", average, frameCount, filename);
+	PDB *pdbData;
+	PDB refPDBData;
+	readPDB(filename, &refPDBData);
+	
+	pdbData = (PDB*)calloc(frameCount, sizeof(PDB));
+	int i, atom;
+	for(i = 0; i < frameCount; i++){
+		//printf("lalala\n");
+		pdbData[i].atomCount = refPDBData.atomCount;
+		pdbData[i].atoms = (Atom*)calloc(refPDBData.atomCount, sizeof(Atom));
+		for (atom = 0; atom < refPDBData.atomCount; atom++)
+			memcpy(&pdbData[i].atoms[atom], &refPDBData.atoms[atom], sizeof(Atom));
+	}
+	
+	FILE* pdb = fopen(filename, "r");
+	char buffer[1024];
+	int frame = 0;
+	int current_atom = 0;
+	printf("->Reading frames...\n");
+	while(fgets(buffer, 1024, pdb) != NULL && frame < frameCount){
+		if (strncmp(buffer, "ATOM", 4) == 0)
+			parseAtomLine(&pdbData[frame], buffer, current_atom);
+		current_atom++;
+
+		if (strncmp(buffer, "END", 3) == 0){
+			//printf("Finished frame %d\n", frame);
+			frame ++;
+			current_atom = 0;
+		}
+
+	}
+
+	FILE* out = fopen(filename, "w");
+	fclose(out);
+
+	for (atom = 0; atom < refPDBData.atomCount; atom++){
+		refPDBData.atoms[atom].beta = 0.0f;
+		refPDBData.atoms[atom].occupancy = 0.0f;
+		refPDBData.atoms[atom].x = 0.0f;
+		refPDBData.atoms[atom].y = 0.0f;
+		refPDBData.atoms[atom].z = 0.0f;
+	}
+
+	printf("->Averaging...\n");
+	int connect = 1;
+	for (frame = 0; frame < frameCount - average; frame++){
+		printf("\tCurrent frame %d\n", frame);
+		for (i = 0; i < average; i++){
+			for (atom = 0; atom < refPDBData.atomCount; atom++){
+				refPDBData.atoms[atom].beta += pdbData[frame + i].atoms[atom].beta/average;
+				refPDBData.atoms[atom].occupancy += pdbData[frame + i].atoms[atom].occupancy/average;
+				refPDBData.atoms[atom].x += pdbData[frame + i].atoms[atom].x/average;
+				refPDBData.atoms[atom].y += pdbData[frame + i].atoms[atom].y/average;
+				refPDBData.atoms[atom].z += pdbData[frame + i].atoms[atom].z/average;
+
+			}
+		}
+		if (frame > 0) connect = 0;
+		appendPDB(filename, &refPDBData, connect);
+		for (atom = 0; atom < refPDBData.atomCount; atom++){
+			refPDBData.atoms[atom].beta = 0.0f;
+			refPDBData.atoms[atom].occupancy = 0.0f;
+			refPDBData.atoms[atom].x = 0.0f;
+			refPDBData.atoms[atom].y = 0.0f;
+			refPDBData.atoms[atom].z = 0.0f;
+		}
+	}
+
+	free(pdbData);
 }

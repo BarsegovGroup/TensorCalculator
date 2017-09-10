@@ -33,9 +33,8 @@ double energyScale;
 
 int CONECT;
 
-//int computeOn;
-//int printPDBOn;
-//int printDatOn;
+int avEnergy;
+
 
 void createEnergy(){
 	printf("Creating energy structure...\n");
@@ -46,6 +45,7 @@ void createEnergy(){
 	energy.printPDB = &printPDBEnergy;
 	energy.printDAT = &printDATEnergy;
 	energy.destroy = &destroyEnergy;
+	energy.runningAverage = &averageEnergy;
 	tensors[tensorsCount] = &energy;
 	tensorsCount ++;
 	initEnergy();
@@ -71,6 +71,7 @@ void initEnergy(){
 		pdbEnergy = fopen(pdbEnergyFilename, "w");
 		fclose(pdbEnergy);
 		energyScale = getDoubleParameter("energyScaleFactor", 1.0, 1);
+		avEnergy = getIntegerParameter("averageEnergy", 1, 1);
 	}
 
 	if (printDatOn){
@@ -78,7 +79,7 @@ void initEnergy(){
 			getMaskedParameter(tnsrEnergyFilename, "inputEnergy", "", 0);
 			tnsrEnergy = fopen(tnsrEnergyFilename, "r");
 		}
-		getMaskedParameter(datEnergyFilename, "outputDATEnergy", "", 0);
+		getMaskedParameter(datEnergyFilename, "datEnergy", "", 0);
 		datEnergy = fopen(datEnergyFilename, "w");
 		fclose(datEnergy);
 		energyScale = getDoubleParameter("energyScaleFactor", 1.0, 1);
@@ -92,7 +93,6 @@ inline void computeEnergy(){
 	int atom, j, id1, id2;
 	Vector atomDistance;
 	double totalFENEEnergy, totalNativeEnergy, totalRepulEnergy;
-	//double tmp = 0.0;
 	double tot = 0.0;
 
 	for (atom = 0; atom < pdbData.atomCount; atom++)
@@ -108,7 +108,6 @@ inline void computeEnergy(){
 			id1 = atom, id2 = bonds[atom * MAX_BONDS + j];
 			funcParam.refDist = bondsR0[atom * MAX_BONDS + j];
 			copyVector(&atomDistance, DCDtoVector(X[id1] - X[id2], Y[id1] - Y[id2], Z[id1] - Z[id2]));
-			//printf("%d-%d: %f - %f = %f\n", id1, id2, atomDistance.value,funcParam.refDist, atomDistance.value - funcParam.refDist);
 			totalFENEEnergy += getFENEEnergy(atomDistance.value)/2.0;
 		}
 
@@ -118,8 +117,6 @@ inline void computeEnergy(){
 			funcParam.Eh = nativeEh[atom * MAX_NATIVE + j];
 			copyVector(&atomDistance, DCDtoVector(X[id1] - X[id2], Y[id1] - Y[id2], Z[id1] - Z[id2]));
 			totalNativeEnergy += getNativeEnergy(atomDistance.value)/2.0;
-			//if (atom == 11)
-				//printf("%d-%d: eh=%f ref=%f dist=%f energy=%f\n", id1, id2, funcParam.Eh, funcParam.refDist, atomDistance.value, tmp);
 		}
 
 		for (j = 0; j < pairsCount[atom]; j++){
@@ -133,20 +130,13 @@ inline void computeEnergy(){
 		atomEnergy[atom] = totalFENEEnergy + totalNativeEnergy + totalRepulEnergy;
 
 		tot += atomEnergy[atom];
-		//if (atom < 17 )
-		//	printf("%d: %f = %f + %f + %f\n\n", atom, atomEnergy[atom],totalFENEEnergy, totalNativeEnergy, totalRepulEnergy);
 	}
-
-	//printf("total %f\n", tot);
-	//printf("\n");
 
 }
 
 inline void readEnergy(){
 	printf("Reading input energies...\n");
 	readAtomValueFrame(tnsrEnergy, atomEnergy);
-	//int i;
-	//for (i = 0; i < 5; i++) printf("%d: %f\n", i, atomEnergy[i]);
 }
 
 inline void writeEnergy(){
@@ -154,7 +144,6 @@ inline void writeEnergy(){
 	outEnergy = fopen(outEnergyFilename, "a");
 	int i;
 	for (i = 0; i < pdbData.atomCount; i++){
-		//strcpy(pdbData.atoms[i].segment, pdbData.atoms[i].chain);
 		if ( strcmp(pdbData.atoms[i].segment, "") == 0)
 			pdbData.atoms[i].segment[0] = pdbData.atoms[i].chain;
 		printAtomValueToFile(outEnergy, pdbData.atoms[i], atomEnergy[i]);
@@ -170,14 +159,12 @@ inline void printPDBEnergy(){
 		pdbData.atoms[i].x = X[i];
 		pdbData.atoms[i].y = Y[i];
 		pdbData.atoms[i].z = Z[i];
-		//strcpy(pdbData.atoms[i].segment, pdbData.atoms[i].chain);
 		if ( strcmp(pdbData.atoms[i].segment, "") == 0)
 			pdbData.atoms[i].segment[0] = pdbData.atoms[i].chain;
 		pdbData.atoms[i].beta = 0.0;
 		pdbData.atoms[i].charge = 0.0;
 		pdbData.atoms[i].occupancy = atomEnergy[i] * energyScale;
 
-		//if (i < 5) printf("%d: %f\n", i, atomEnergy[i]);
 	}
 	if (cutoffAveOn || cutoffSumOn) makeCutOffAveraged();
 	if (segmentAveOn || segmentSumOn) makeSegmentAveraged();
@@ -188,28 +175,23 @@ inline void printDATEnergy(){
 	printf("Printing DAT file with energy distribution...\n");
 	int i;
 	datEnergy = fopen(datEnergyFilename, "a");
+
+	double totalEnergy = 0.0;
 	for (i = 0; i < pdbData.atomCount; i++){
-		//strcpy(pdbData.atoms[i].segment, pdbData.atoms[i].chain);
-		if ( strcmp(pdbData.atoms[i].segment, "") == 0)
-			pdbData.atoms[i].segment[0] = pdbData.atoms[i].chain;
-		pdbData.atoms[i].beta = 0.0;
-		pdbData.atoms[i].charge = 0.0;
-		pdbData.atoms[i].occupancy = atomEnergy[i] * energyScale;
-
-		//if (i < 5) printf("%d: %f\n", i, atomEnergy[i]);
+		totalEnergy += atomEnergy[i];
 	}
-	if (cutoffAveOn || cutoffSumOn) makeCutOffAveraged();
-	if (segmentAveOn || segmentSumOn) makeSegmentAveraged();
 
-	for (i = 0; i < pdbData.atomCount; i++)
-		fprintf(datEnergy, "%d\t%d\t%f\n", frame, i, pdbData.atoms[i].occupancy);
+	fprintf(datEnergy, "%f\n", totalEnergy);
 	fclose(datEnergy);
 }
 
 void destroyEnergy(){
 	free(atomEnergy);
 	if (tnsrEnergy != NULL) fclose(tnsrEnergy);
-	//if (outEnergy != NULL) fclose(outEnergy);
-	//if (pdbEnergy != NULL) fclose(pdbEnergy);
+}
+
+inline void averageEnergy(){
+	if (avEnergy > 1)
+		makeRunningAveraged(pdbEnergyFilename, avEnergy);
 }
 

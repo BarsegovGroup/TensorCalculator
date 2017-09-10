@@ -19,5 +19,6 @@ inline void writeEnergy();
 inline void printPDBEnergy();
 inline void printDATEnergy();
 void destroyEnergy();
+inline void averageEnergy();
 
 #endif /* ENERGY_H_ */

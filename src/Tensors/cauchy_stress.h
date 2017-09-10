@@ -19,5 +19,6 @@ inline void writeCauchyStress();
 inline void printPDBCauchyStress();
 inline void printDATCauchyStress();
 inline void destroyCauchyStressTensor();
+inline void averageCauchyStressTensor();
 
 #endif /* CAUCHY_TENSOR_H_ */

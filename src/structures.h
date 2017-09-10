@@ -20,6 +20,7 @@ typedef struct{
 	void (*printPDB)();
 	void (*printDAT)();
 	void (*destroy)();
+	void (*runningAverage)();
 } Tensors;
 
 typedef struct{
@@ -36,6 +37,7 @@ typedef struct{
 } FuncParam;
 
 extern int frame;
+extern int frameCount;
 extern float* X;
 extern float* Y;
 extern float* Z;
